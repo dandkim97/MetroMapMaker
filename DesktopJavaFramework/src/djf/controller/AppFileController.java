@@ -271,4 +271,12 @@ public class AppFileController {
                                + "Contributor(s): Richard McKenna, Ritwik Banerjee");
             alert.showAndWait();
     }
+
+    public void handleExportRequest() {
+        Alert alert = new Alert(Alert.AlertType.INFORMATION);
+            alert.setTitle("Export Dialog");
+                alert.setHeaderText("Exported Map");
+                alert.setContentText("Map has been exported.");
+                alert.showAndWait();
+    }
 }

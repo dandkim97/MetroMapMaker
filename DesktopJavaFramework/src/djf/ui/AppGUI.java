@@ -436,10 +436,10 @@ public class AppGUI {
 //        saveAsButton.setOnAction(e -> {
 //            fileController.handleSaveAsRequest();
 //        })
-//        exportButton.setOnAction(e -> {
-//            fileController.handleExportRequest();
-//        });	
-//        
+        exportButton.setOnAction(e -> {
+            fileController.handleExportRequest();
+        });	
+        
         // NOW PUT THE FILE TOOLBAR IN THE TOP TOOLBAR, WHICH COULD
         // ALSO STORE OTHER TOOLBARS
         topToolbarPane = new BorderPane();
