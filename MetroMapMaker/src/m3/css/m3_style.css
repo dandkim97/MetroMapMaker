@@ -29,10 +29,10 @@
 }
 
 .bordered_pane {
-    -fx-background-color: #aaaaff;
+    -fx-background-color: #98b78f;
     -fx-background-radius: 5.0;
     -fx-padding: 15;
     -fx-spacing: 10;
     -fx-border-width: 2px;
-    -fx-border-color: #7777dd;
+    -fx-border-color: #4c8c4a;
 }
