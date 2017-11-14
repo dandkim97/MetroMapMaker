@@ -54,7 +54,7 @@ public abstract class AppTemplate extends Application {
                 
                 gui = new AppGUI(primaryStage, appTitle, this);
                 
-                dialog.show("Welcome dialog", "WELCOME DIALOG");
+                dialog.show("Welcome to the Metro Map Maker", "");
                 if(dialog.getTruth()){
                     buildAppComponentsHook();
                 }

@@ -12,7 +12,12 @@ import javafx.scene.layout.VBox;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
 import djf.AppTemplate;
+import javafx.scene.control.Hyperlink;
 import javafx.scene.control.TextInputDialog;
+import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
+import javafx.scene.layout.BorderPane;
+import javafx.scene.text.TextFlow;
 
 
 /**
@@ -23,14 +28,14 @@ public class WelcomeDialogSingleton extends Stage{
     
     static WelcomeDialogSingleton singleton;
     
-    HBox canvas;
-    VBox messagePane;
+    BorderPane canvas;
+    BorderPane messagePane;
+    BorderPane rightPane;
     VBox rMessagePane;
     Scene messageScene;
     Label messageLabel;
     Label rMessageLabel;
-    Label msg1;
-    Label msg2;
+    Hyperlink msg1;
     Button newMapButton;
     Boolean truth = true;
     
@@ -57,14 +62,24 @@ public class WelcomeDialogSingleton extends Stage{
         // LABEL TO DISPLAY THE CUSTOM MESSAGE
         messageLabel = new Label();
         rMessageLabel = new Label("Recent Projects");
-        msg1 = new Label("Map1");
-        msg2 = new Label("Map2");
-
+        rMessageLabel.setStyle("-fx-text-fill: #000000");
+        msg1 = new Hyperlink("Fun Place");
+        
         // BUTTONS
         newMapButton = new Button("Create New Map");
 	
 	// MAKE THE EVENT HANDLER FOR THESE BUTTONS
         newMapButton.setOnAction(e -> {
+            TextInputDialog dialog = new TextInputDialog("");
+                dialog.setTitle("Making a New Map");
+                dialog.setHeaderText("Make a New Map");
+                dialog.setContentText("Type here:");
+                dialog.showAndWait();
+            WelcomeDialogSingleton.this.close();    
+            setTruth();
+        });
+        
+        msg1.setOnAction(e ->{
             WelcomeDialogSingleton.this.close();
             setTruth();
         });
@@ -75,25 +90,38 @@ public class WelcomeDialogSingleton extends Stage{
         buttonBox.getChildren().add(newMapButton);
         
         // WE'LL PUT EVERYTHING HERE
-        canvas = new HBox(50);
-        messagePane = new VBox();
-        messagePane.setAlignment(Pos.CENTER);
-        messagePane.getChildren().add(messageLabel);
-        messagePane.getChildren().add(buttonBox);
+        canvas = new BorderPane();
+        
+        rightPane = new BorderPane();
+        messagePane = new BorderPane();
+        messagePane.setStyle("-fx-background-color: #FFFFFF;\n" +
+                                "    -fx-padding: 15;\n" +
+                                "    -fx-spacing: 10;  ");
+        messagePane.setTop(messageLabel);
+        messagePane.setCenter(buttonBox);
+        
+        Image image = new Image("welcomeLogo.png");
+        rightPane.setTop(new ImageView(image));
+        rightPane.setCenter(messagePane);
         
         rMessagePane = new VBox(20);
+        rMessagePane.setStyle("-fx-background-color: #98b78f;\n" +
+                                "    -fx-background-radius: 5.0;\n" +
+                                "    -fx-padding: 15;\n" +
+                                "    -fx-spacing: 10;\n" +
+                                "    -fx-border-width: 2px;\n" +
+                                "    -fx-border-color: #4c8c4a;");
         rMessagePane.getChildren().add(rMessageLabel);
         rMessagePane.getChildren().add(msg1);
-        rMessagePane.getChildren().add(msg2);
         
         // MAKE IT LOOK NICE
-        messagePane.setPadding(new Insets(10, 20, 20, 20));
-        messagePane.setSpacing(10);
-        canvas.getChildren().add(rMessagePane);
-        canvas.getChildren().add(messagePane);
-
+//        messagePane.setPadding(new Insets(10, 20, 20, 20));
+//        messagePane.setSpacing(10);
+        canvas.setLeft(rMessagePane);
+        canvas.setCenter(rightPane);
+        
         // AND PUT IT IN THE WINDOW
-        messageScene = new Scene(canvas);
+        messageScene = new Scene(canvas, 800, 400);
         this.setScene(messageScene);
     }
     
