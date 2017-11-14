@@ -6,7 +6,11 @@ import properties_manager.PropertiesManager;
 import properties_manager.InvalidXMLFileFormatException;
 import static djf.settings.AppPropertyType.*;
 import static djf.settings.AppStartupConstants.*;
+import java.util.Optional;
 import javafx.application.Application;
+import javafx.scene.control.Alert;
+import javafx.scene.control.Alert.AlertType;
+import javafx.scene.control.ButtonType;
 import javafx.stage.Stage;
 
 /**
@@ -21,11 +25,13 @@ public abstract class AppTemplate extends Application {
     protected AppWorkspaceComponent workspaceComponent;
     
     public abstract void buildAppComponentsHook();
+    public abstract void buildAppComponentsHook2();
     
     public AppDataComponent getDataComponent() { return dataComponent; }
     public AppFileComponent getFileComponent() { return fileComponent; }
     public AppWorkspaceComponent getWorkspaceComponent() { return workspaceComponent; }
     public AppGUI getGUI() { return gui; }
+    
     
     @Override
     public void start(Stage primaryStage) {
@@ -34,18 +40,27 @@ public abstract class AppTemplate extends Application {
 	messageDialog.init(primaryStage);
 	AppYesNoCancelDialogSingleton yesNoDialog = AppYesNoCancelDialogSingleton.getSingleton();
 	yesNoDialog.init(primaryStage);
+        WelcomeDialogSingleton welcomeDialog = WelcomeDialogSingleton.getSingleton();
+        welcomeDialog.init(primaryStage);
 	PropertiesManager props = PropertiesManager.getPropertiesManager();
         
         try{
             boolean success = false;
             success = loadProperties(APP_PROPERTIES_FILE_NAME);
             if(success){
+                WelcomeDialogSingleton dialog = WelcomeDialogSingleton.getSingleton();
+                
                 String appTitle = props.getProperty(APP_TITLE);
                 
                 gui = new AppGUI(primaryStage, appTitle, this);
                 
-                buildAppComponentsHook();
-                
+                dialog.show("Welcome dialog", "WELCOME DIALOG");
+                if(dialog.getTruth()){
+                    buildAppComponentsHook();
+                }
+                else{
+                    buildAppComponentsHook2();
+                }
                 primaryStage.show();
             }
             

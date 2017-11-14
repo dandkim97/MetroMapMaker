@@ -13,6 +13,7 @@ import javafx.scene.layout.Pane;
 import javafx.scene.paint.Color;
 import javafx.scene.paint.Paint;
 import m3.gui.m3Workspace;
+import m3.m3App;
 
 /**
  *
@@ -23,6 +24,10 @@ public class m3Data implements AppDataComponent{
     Color backgroundColor;
     
     AppTemplate app;
+
+    public m3Data(m3App aThis) {
+        
+    }
             
     public void resetData() {
     }

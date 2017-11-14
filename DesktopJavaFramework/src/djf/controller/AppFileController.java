@@ -11,6 +11,7 @@ import static djf.settings.AppStartupConstants.*;
 import djf.ui.AppGUI;
 import djf.ui.AppMessageDialogSingleton;
 import djf.ui.AppYesNoCancelDialogSingleton;
+import javafx.scene.control.TextInputDialog;
 import properties_manager.PropertiesManager;
 
 /**
@@ -278,5 +279,14 @@ public class AppFileController {
                 alert.setHeaderText("Exported Map");
                 alert.setContentText("Map has been exported.");
                 alert.showAndWait();
+    }
+    
+    public void handleWelcomeRequest(){
+        TextInputDialog dialog = new TextInputDialog("");
+                dialog.setTitle("Text Input Dialog");
+                dialog.setHeaderText("New Map");
+                dialog.setContentText("Please enter the name:");
+                dialog.showAndWait();
+        
     }
 }

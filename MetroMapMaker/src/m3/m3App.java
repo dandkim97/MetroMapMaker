@@ -3,6 +3,8 @@ package m3;
 import djf.AppTemplate;
 import java.util.Locale;
 import static javafx.application.Application.launch;
+import m3.data.m3Data;
+import m3.file.m3Files;
 import m3.gui.m3Workspace;
 
 /**
@@ -17,10 +19,19 @@ public class m3App extends AppTemplate {
         // THE WORKSPACE NEEDS THE DATA COMPONENT TO EXIST ALREADY
         // WHEN IT IS CONSTRUCTED, AND THE DATA COMPONENT NEEDS THE
         // FILE COMPONENT SO WE MUST BE CAREFUL OF THE ORDER
-//        fileComponent = new m3Files();
-//        dataComponent = new m3Data(this);
+        fileComponent = new m3Files();
+        dataComponent = new m3Data(this);
         workspaceComponent = new m3Workspace(this);
         workspaceComponent.reloadWorkspace(dataComponent);
+    }
+    
+    @Override
+    public void buildAppComponentsHook2() {
+        
+        fileComponent = new m3Files();
+        dataComponent = new m3Data(this);
+        workspaceComponent = new m3Workspace(this);
+        workspaceComponent.activateWorkspace(this.getGUI().getAppPane());
     }
     
     public static void main(String[] args) {

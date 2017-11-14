@@ -3,7 +3,21 @@ package m3.gui;
 import djf.AppTemplate;
 import djf.components.AppDataComponent;
 import djf.components.AppWorkspaceComponent;
+import static djf.components.m3Property2.BOLD_ICON;
+import static djf.components.m3Property2.DEC_ICON;
+import static djf.components.m3Property2.INC_ICON;
+import static djf.components.m3Property2.ITALIC_ICON;
+import static djf.components.m3Property2.LIST_ICON;
+import static djf.components.m3Property2.MINUS_ICON;
+import static djf.components.m3Property2.PLUS_ICON;
+import static djf.components.m3Property2.ROUTE_ICON;
+import static djf.components.m3Property2.TURN_ICON;
+import static djf.components.m3Property2.ZOOM_IN_ICON;
+import static djf.components.m3Property2.ZOOM_OUT_ICON;
+import djf.controller.AppFileController;
 import djf.ui.AppGUI;
+import static djf.ui.AppGUI.CLASS_BORDERED_PANE;
+import static djf.ui.AppGUI.CLASS_CANVAS;
 import djf.ui.AppMessageDialogSingleton;
 import djf.ui.AppYesNoCancelDialogSingleton;
 import static m3.m3Property.*;
@@ -11,6 +25,7 @@ import javafx.scene.control.Button;
 import javafx.scene.control.CheckBox;
 import javafx.scene.control.ColorPicker;
 import javafx.scene.control.ComboBox;
+import javafx.scene.control.Label;
 import javafx.scene.control.Slider;
 import javafx.scene.control.TextField;
 import javafx.scene.layout.BorderPane;
@@ -33,11 +48,11 @@ public class m3Workspace extends AppWorkspaceComponent{
     VBox editToolbar;
     
     // FIRST ROW
-    BorderPane row1Box;
+    VBox row1Box;
     
     // TOP
     BorderPane topRow1Box;
-    TextField text1;
+    Label text1;
     ComboBox<String> metroLines;
     ColorPicker colorButton1;
     
@@ -53,11 +68,11 @@ public class m3Workspace extends AppWorkspaceComponent{
     Slider slider1;
     
     // SECOND ROW
-    BorderPane row2Box;
+    VBox row2Box;
     
     // TOP
     BorderPane topRow2Box;
-    TextField text2;
+    Label text2;
     ComboBox<String> metroStations;
     ColorPicker colorButton2;
     
@@ -85,11 +100,11 @@ public class m3Workspace extends AppWorkspaceComponent{
     Button routeButton;
     
     // FOURTH ROW
-    BorderPane row4Box;
+    VBox row4Box;
     
     // TOP
     BorderPane topRow4Box;
-    TextField text4;
+    Label text4;
     ColorPicker colorButton4;
     
     // BOTTOM
@@ -100,11 +115,11 @@ public class m3Workspace extends AppWorkspaceComponent{
     Button removeButton;
     
     // FIFTH ROW
-    BorderPane row5Box;
+    VBox row5Box;
     
     // TOP
     BorderPane topRow5Box;
-    TextField text5;
+    Label text5;
     ColorPicker colorButton5;
     
     // BOTTOM
@@ -115,11 +130,11 @@ public class m3Workspace extends AppWorkspaceComponent{
     ComboBox<String> fontStyle;
     
     // SIXTH ROW
-    BorderPane row6Box;
+    VBox row6Box;
     
     // TOP
     BorderPane topRow6Box;
-    TextField text6;
+    Label text6;
     CheckBox checkBox;
     
     // BOTTOM
@@ -165,74 +180,99 @@ public class m3Workspace extends AppWorkspaceComponent{
         editToolbar = new VBox();
         
         // ROW 1
-        row1Box = new BorderPane();
+        row1Box = new VBox(5);
         
         topRow1Box = new BorderPane();
-        text1 = new TextField("Metro Lines");
+        topRow1Box.setPrefHeight(30);
+        text1 = new Label("Metro Lines");
         metroLines = new ComboBox<String>();
         colorButton1 = new ColorPicker();
+        text1.setMinHeight(topRow1Box.getPrefHeight());
+        metroLines.setMinHeight(topRow1Box.getPrefHeight());
+        colorButton1.setMinHeight(topRow1Box.getPrefHeight());
         topRow1Box.setLeft(text1);
         topRow1Box.setCenter(metroLines);
         topRow1Box.setRight(colorButton1);
         
         midRow1Box = new HBox();
+        midRow1Box.setPrefHeight(30);
         plusButton1 = gui.initChildButton(midRow1Box, PLUS_ICON.toString(), false);
         minusButton1 = gui.initChildButton(midRow1Box, MINUS_ICON.toString(), false);;
         addButton = gui.initChildButton2(midRow1Box, "Add Station", false);
         removeStationButton = gui.initChildButton2(midRow1Box, "Remove Station", false);
         listButton = gui.initChildButton(midRow1Box, LIST_ICON.toString(), false);
         
+        plusButton1.setMinHeight(midRow1Box.getPrefHeight());
+        minusButton1.setMinHeight(midRow1Box.getPrefHeight());
+        addButton.setMinHeight(midRow1Box.getPrefHeight());
+        removeStationButton.setMinHeight(midRow1Box.getPrefHeight());
+        listButton.setMinHeight(midRow1Box.getPrefHeight());
+        
         slider1 = new Slider();
         
-        row1Box.setTop(topRow1Box);
-        row1Box.setCenter(midRow1Box);
-        row1Box.setBottom(slider1);
+        row1Box.getChildren().add(topRow1Box);
+        row1Box.getChildren().add(midRow1Box);
+        row1Box.getChildren().add(slider1);
         
         // ROW 2
-        row2Box = new BorderPane();
+        row2Box = new VBox(5);
         
         topRow2Box = new BorderPane();
-        text2 = new TextField("Metro Stations");
+        topRow2Box.setPrefHeight(30);
+        text2 = new Label("Metro Stations");
         metroStations = new ComboBox<String>();
         colorButton2 = new ColorPicker();
+        text2.setMinHeight(topRow2Box.getPrefHeight());
+        metroStations.setMinHeight(topRow2Box.getPrefHeight());
+        colorButton2.setMinHeight(topRow2Box.getPrefHeight());
         topRow2Box.setLeft(text2);
         topRow2Box.setCenter(metroStations);
         topRow2Box.setRight(colorButton2);
         
         midRow2Box = new HBox();
+        midRow2Box.setPrefHeight(30);
         plusButton2 = gui.initChildButton(midRow2Box, PLUS_ICON.toString(), false);
         minusButton2 = gui.initChildButton(midRow2Box, MINUS_ICON.toString(), false);
         snapButton = gui.initChildButton2(midRow2Box, "Snap", false);
         moveButton = gui.initChildButton2(midRow2Box, "Move Label", false);
         turnButton = gui.initChildButton(midRow2Box, TURN_ICON.toString(), false);
-        
+        plusButton2.setMinHeight(midRow2Box.getPrefHeight());
+        minusButton2.setMinHeight(midRow2Box.getPrefHeight());
+        snapButton.setMinHeight(midRow2Box.getPrefHeight());
+        moveButton.setMinHeight(midRow2Box.getPrefHeight());
+        turnButton.setMinHeight(midRow2Box.getPrefHeight());
         slider2 = new Slider();
         
-        row2Box.setTop(topRow2Box);
-        row2Box.setCenter(midRow2Box);
-        row2Box.setBottom(slider2);
+        row2Box.getChildren().add(topRow2Box);
+        row2Box.getChildren().add(midRow2Box);
+        row2Box.getChildren().add(slider2);
         
         // ROW 3 
         row3Box = new BorderPane();
         
-        leftRowBox = new VBox();
+        leftRowBox = new VBox(5);
         fromButton = new ComboBox<String>();
+        fromButton.setMinSize(200,20);
         toButton = new ComboBox<String>();
+        toButton.setMinSize(200,20);
         leftRowBox.getChildren().add(fromButton);
         leftRowBox.getChildren().add(toButton);
         
         rightRowBox = new VBox();
         routeButton = gui.initChildButton(rightRowBox, ROUTE_ICON.toString(), false);
+        routeButton.setMinSize(55, 55);
         
         row3Box.setLeft(leftRowBox);
         row3Box.setRight(rightRowBox);
         
         // ROW 4
-        row4Box = new BorderPane();
+        row4Box = new VBox(5);
         
         topRow4Box = new BorderPane();
-        text4 = new TextField("Decor");
+        text4 = new Label("Decor");
         colorButton4 = new ColorPicker();
+        text4.setMinHeight(30);
+        colorButton4.setMinHeight(30);
         topRow4Box.setLeft(text4);
         topRow4Box.setRight(colorButton4);
         
@@ -241,30 +281,50 @@ public class m3Workspace extends AppWorkspaceComponent{
         imageButton = gui.initChildButton2(botRow4Box, "Add Image", false);
         labelButton = gui.initChildButton2(botRow4Box, "Add Label", false);
         removeButton = gui.initChildButton2(botRow4Box, "Remove Element", false);
+        imageBgButton.setMinHeight(30);
+        imageButton.setMinHeight(30);
+        labelButton.setMinHeight(30);
+        removeButton.setMinHeight(30);
+        
+        row4Box.getChildren().add(topRow4Box);
+        row4Box.getChildren().add(botRow4Box);
         
         // ROW 5
-        row5Box = new BorderPane();
+        row5Box = new VBox(5);
         
         topRow5Box = new BorderPane();
-        text5 = new TextField("Font");
+        text5 = new Label("Font");
         colorButton5 = new ColorPicker();
+        text5.setMinHeight(30);
+        colorButton5.setMinHeight(30);
         topRow5Box.setLeft(text5);
         topRow5Box.setRight(colorButton5);
         
-        botRow5Box = new HBox();
+        botRow5Box = new HBox(5);
         boldButton = gui.initChildButton(botRow5Box, BOLD_ICON.toString(), false);
         italicButton = gui.initChildButton(botRow5Box, ITALIC_ICON.toString(), false);
         fontSize = new ComboBox<Integer>();
+        fontSize.setValue(12);
         fontStyle = new ComboBox<String>();
+        fontStyle.setValue("Times New Roman");
+        boldButton.setMinHeight(30);
+        italicButton.setMinHeight(30);
+        fontSize.setMinHeight(30);
+        fontStyle.setMinSize(100, 30);
         botRow5Box.getChildren().add(fontSize);
         botRow5Box.getChildren().add(fontStyle);
         
+        row5Box.getChildren().add(topRow5Box);
+        row5Box.getChildren().add(botRow5Box);
+        
         // ROW 6
-        row6Box = new BorderPane();
+        row6Box = new VBox(5);
         
         topRow6Box = new BorderPane();
-        text6 = new TextField("Navigation");
+        text6 = new Label("Navigation");
         checkBox = new CheckBox("Show Grid");
+        text6.setMinHeight(30);
+        checkBox.setMinHeight(30);
         topRow6Box.setLeft(text6);
         topRow6Box.setRight(checkBox);
         
@@ -273,6 +333,13 @@ public class m3Workspace extends AppWorkspaceComponent{
         zoomOutButton = gui.initChildButton(botRow6Box, ZOOM_OUT_ICON.toString(), false);
         incButton = gui.initChildButton(botRow6Box, INC_ICON.toString(), false);
         decButton = gui.initChildButton(botRow6Box, DEC_ICON.toString(), false);
+        zoomInButton.setMinHeight(30);
+        zoomOutButton.setMinHeight(30);
+        incButton.setMinHeight(30);
+        decButton.setMinHeight(30);
+        
+        row6Box.getChildren().add(topRow6Box);
+        row6Box.getChildren().add(botRow6Box);
         
         editToolbar.getChildren().add(row1Box);
         editToolbar.getChildren().add(row2Box);
@@ -289,33 +356,33 @@ public class m3Workspace extends AppWorkspaceComponent{
 	debugText.setY(100);
 	
 	// AND MAKE SURE THE DATA MANAGER IS IN SYNCH WITH THE PANE
-	//m3Data data = (m3Data)app.getDataComponent();
-	//data.setShapes(canvas.getChildren());
+	m3Data data = (m3Data)app.getDataComponent();
+//	data.setShapes(canvas.getChildren());
         
 	// AND NOW SETUP THE WORKSPACE
 	workspace = new BorderPane();
 	((BorderPane)workspace).setLeft(editToolbar);
-	((BorderPane)workspace).setCenter(canvas);
+        ((BorderPane)workspace).setRight(canvas);
     }
     
     public void initStyle() {
 	// NOTE THAT EACH CLASS SHOULD CORRESPOND TO
 	// A STYLE CLASS SPECIFIED IN THIS APPLICATION'S
 	// CSS FILE
-	canvas.getStyleClass().add(CLASS_RENDER_CANVAS);
+	canvas.getStyleClass().add(CLASS_CANVAS);
 	
 //	// COLOR PICKER STYLE
 //	fillColorPicker.getStyleClass().add(CLASS_BUTTON);
 //	outlineColorPicker.getStyleClass().add(CLASS_BUTTON);
 //	backgroundColorPicker.getStyleClass().add(CLASS_BUTTON);
 	
-	editToolbar.getStyleClass().add(CLASS_EDIT_TOOLBAR);
-	row1Box.getStyleClass().add(CLASS_EDIT_TOOLBAR_ROW);
-        row2Box.getStyleClass().add(CLASS_EDIT_TOOLBAR_ROW);
-        row3Box.getStyleClass().add(CLASS_EDIT_TOOLBAR_ROW);
-	row4Box.getStyleClass().add(CLASS_EDIT_TOOLBAR_ROW);
-	row5Box.getStyleClass().add(CLASS_EDIT_TOOLBAR_ROW);
-        row6Box.getStyleClass().add(CLASS_EDIT_TOOLBAR_ROW);
+	editToolbar.getStyleClass().add(CLASS_BORDERED_PANE);
+	row1Box.getStyleClass().add(CLASS_BORDERED_PANE);
+        row2Box.getStyleClass().add(CLASS_BORDERED_PANE);
+        row3Box.getStyleClass().add(CLASS_BORDERED_PANE);
+	row4Box.getStyleClass().add(CLASS_BORDERED_PANE);
+	row5Box.getStyleClass().add(CLASS_BORDERED_PANE);
+        row6Box.getStyleClass().add(CLASS_BORDERED_PANE);
     }
     
     

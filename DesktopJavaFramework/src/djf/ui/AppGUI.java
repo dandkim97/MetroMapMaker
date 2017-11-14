@@ -177,14 +177,14 @@ public class AppGUI {
         initTopToolbar(app);
         initTopToolBar2(app);
         initTopToolBar3(app);
-        initLayout(app);
+//        initLayout(app);
         		
         // AND FINALLY START UP THE WINDOW (WITHOUT THE WORKSPACE)
         initWindow();
         
         // INIT THE STYLESHEET AND THE STYLE FOR THE FILE TOOLBAR
         initStylesheet(app);
-        initStyle();
+//        initStyle();
         initFileToolbarStyle();
         initFileToolbarStyle2();
         initFileToolbarStyle3();
