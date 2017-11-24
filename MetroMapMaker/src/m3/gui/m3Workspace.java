@@ -149,7 +149,7 @@ public class m3Workspace extends AppWorkspaceComponent{
     
     // HERE ARE THE CONTROLLERS
     CanvasController canvasController;
-    MapEditController logoEditController;    
+    MapEditController mapEditController;    
 
     // HERE ARE OUR DIALOGS
     AppMessageDialogSingleton messageDialog;
@@ -169,8 +169,8 @@ public class m3Workspace extends AppWorkspaceComponent{
         initLayout();
         
 //        // HOOK UP THE CONTROLLERS
-//        initControllers();
-//        
+        initController();
+        
         // AND INIT THE STYLE FOR THE WORKSPACE
         initStyle();    
     }
@@ -357,14 +357,24 @@ public class m3Workspace extends AppWorkspaceComponent{
 	
 	// AND MAKE SURE THE DATA MANAGER IS IN SYNCH WITH THE PANE
 	m3Data data = (m3Data)app.getDataComponent();
-//	data.setShapes(canvas.getChildren());
+	data.setShapes(canvas.getChildren());
         
 	// AND NOW SETUP THE WORKSPACE
 	workspace = new BorderPane();
 	((BorderPane)workspace).setLeft(editToolbar);
-        ((BorderPane)workspace).setRight(canvas);
+        ((BorderPane)workspace).setCenter(canvas);
     }
     
+    public void initController(){
+        // MAKE THE EDIT CONTROLLER
+        mapEditController = new MapEditController(app, gui);
+        
+        // CONNECT THE BUTTONS TO RESPECTIVE HANDLERS
+        plusButton1.setOnAction(e->{
+            mapEditController.doAddLine();
+        });
+        
+    }
     public void initStyle() {
 	// NOTE THAT EACH CLASS SHOULD CORRESPOND TO
 	// A STYLE CLASS SPECIFIED IN THIS APPLICATION'S
