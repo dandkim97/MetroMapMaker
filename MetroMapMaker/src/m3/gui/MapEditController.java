@@ -17,6 +17,7 @@ import javafx.scene.text.FontWeight;
 import javafx.scene.text.Text;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
+import m3.data.DraggableLine;
 import m3.data.m3Data;
 
 /**
@@ -29,6 +30,7 @@ public class MapEditController {
     m3Data dataManager;
     
     String text;
+    Color lineColor;
     
     public MapEditController(AppTemplate initApp, AppGUI initGUI){
         app = initApp;
@@ -44,30 +46,47 @@ public class MapEditController {
         dialog.setTitle("Creating a New Line");
         dialog.showAndWait();
         
-        this.setText(dialog.getText());
+        this.setLineText(dialog.getText());
+        this.setLineColor(dialog.getColor());
         
-        Line l = new Line(100, 100, 500, 100);
-        Text t = new Text(this.getText());
-        Text t2 = new Text(this.getText());
-        Circle c1 = new Circle(80, 100, 50);
-        Circle c2 = new Circle(510, 100, 50);
-        t.xProperty().bind(c1.centerXProperty() );
-        t.yProperty().bind(c1.centerYProperty());
-        t2.xProperty().bind(c2.centerXProperty());
-        t2.yProperty().bind(c2.centerYProperty());
+        DraggableLine newLine = new DraggableLine(100, 100, 500, 100);
+        newLine.setLineColor(this.getLineColor());
+        newLine.setEndLabel(this.getLineText());
+        newLine.setStartLabel(this.getLineText());
+//        Line line = new Line(100, 100, 500, 100);
+//        line.setStroke(this.getLineColor());
+//        Text t = new Text(this.getLineText());
+//        t.setFill(this.getLineColor());
+//        Text t2 = new Text(this.getLineText());
+//        t2.setFill(this.getLineColor());
+//        Circle c1 = new Circle(80, 100, 50);
+//        c1.setCenterX(60);
+//        Circle c2 = new Circle(510, 100, 50);
+//        t.xProperty().bind(c1.centerXProperty());
+//        t.yProperty().bind(c1.centerYProperty());
+//        t2.xProperty().bind(c2.centerXProperty());
+//        t2.yProperty().bind(c2.centerYProperty());
         
-        dataManager.addShape(l);
-        dataManager.addShape(t);
-        dataManager.addShape(t2);
+        dataManager.addShape(newLine);
+
+        
         
     }
     
     // HELPER FOR doAddLine    
-    public void setText(String newText){
+    public void setLineText(String newText){
         text = newText;
     }
     
-    public String getText(){
+    public String getLineText(){
         return text;
+    }
+    
+    public void setLineColor(Color newColor){
+        lineColor = newColor;
+    }
+    
+    public Color getLineColor(){
+        return lineColor;
     }
 }

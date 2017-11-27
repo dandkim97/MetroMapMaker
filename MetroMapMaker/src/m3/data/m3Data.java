@@ -140,5 +140,9 @@ public class m3Data implements AppDataComponent{
 	Background background = new Background(fill);
 	canvas.setBackground(background);
     }
+
+    public void addShape(DraggableLine newLine) {
+        shapes.add(newLine);
+    }
     
 }

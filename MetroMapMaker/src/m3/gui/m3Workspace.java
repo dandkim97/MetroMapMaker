@@ -372,6 +372,8 @@ public class m3Workspace extends AppWorkspaceComponent{
         // CONNECT THE BUTTONS TO RESPECTIVE HANDLERS
         plusButton1.setOnAction(e->{
             mapEditController.doAddLine();
+            metroLines.getItems().add(mapEditController.getLineText());
+            metroLines.setValue(mapEditController.getLineText());
         });
         
     }
