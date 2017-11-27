@@ -1,5 +1,6 @@
 package m3.gui;
 
+import static java.awt.Color.black;
 import java.util.Optional;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
@@ -26,7 +27,9 @@ public class newLineDialog extends Stage{
     Button yes;
     Button cancel;
     String printText;
-    Color color;
+    String initText = "";
+    Color color = Color.BLACK;
+    Boolean colorSelected = false;
     
     public newLineDialog(){}
     
@@ -38,7 +41,7 @@ public class newLineDialog extends Stage{
         messageLabel = new Label("New Map Details");
         
         // FEATURES IN THE DIALOG
-        text = new TextArea();
+        text = new TextArea(initText);
         text.setMaxHeight(10);
         text.setMaxWidth(100);
         lineColor = new ColorPicker();
@@ -57,6 +60,7 @@ public class newLineDialog extends Stage{
         
         lineColor.setOnAction(e ->{
             setColor(lineColor.getValue());
+            colorSelected = true;
         });
 
         // NOW ORGANIZE OUR BUTTONS
@@ -93,5 +97,11 @@ public class newLineDialog extends Stage{
          return color;
      }
      
+     public void setInitText(String text){
+         initText = text;
+     }
      
+     public boolean isColorSelected(){
+         return colorSelected;
+     }
 }

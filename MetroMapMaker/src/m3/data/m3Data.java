@@ -40,8 +40,9 @@ public class m3Data implements AppDataComponent{
     // THIS IS THE SHAPE CURRENTLY BEING SIZED BUT NOT YET ADDED
     Shape newShape;
 
-    // THIS IS THE SHAPE CURRENTLY SELECTED
+    // THIS IS THE SHAPE/LINE CURRENTLY SELECTED
     Shape selectedShape;
+    DraggableLine selectedLine;
     
     // THIS IS FOR STORING ALL THE CREATED LINES
     ArrayList<DraggableLine> lineList = new ArrayList<>();
@@ -156,6 +157,23 @@ public class m3Data implements AppDataComponent{
     public void addShape(DraggableLine newLine) {
         shapes.add(newLine);
         lineList.add(newLine);
+    }
+    
+    public void removeShape(Shape shapeToRemove) {
+	shapes.remove(shapeToRemove);
+    }
+    
+    public void removeShape(DraggableLine lineToRemove) {
+	shapes.remove(lineToRemove);
+        lineList.remove(lineToRemove);
+    }
+    
+    public void setSelectedLine(DraggableLine lineSelected){
+        selectedLine = lineSelected;
+    }
+    
+    public DraggableLine getSelectedLine(){
+        return selectedLine;
     }
     
     // TO GET DRAGGABLE LINE FROM METROLINES COMBOBOX

@@ -32,6 +32,7 @@ import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.Pane;
 import javafx.scene.layout.VBox;
+import javafx.scene.paint.Color;
 import javafx.scene.text.Text;
 import static m3.css.m3Style.*;
 import m3.data.m3Data;
@@ -54,7 +55,7 @@ public class m3Workspace extends AppWorkspaceComponent{
     BorderPane topRow1Box;
     Label text1;
     ComboBox<String> metroLines;
-    ColorPicker colorButton1;
+    Button colorButton1;
     
     // MIDDLE 
     HBox midRow1Box;
@@ -186,7 +187,8 @@ public class m3Workspace extends AppWorkspaceComponent{
         topRow1Box.setPrefHeight(30);
         text1 = new Label("Metro Lines");
         metroLines = new ComboBox<String>();
-        colorButton1 = new ColorPicker();
+        colorButton1 = new Button("#------");
+        colorButton1.setStyle("-fx-background-color: " + "mintcream");
         text1.setMinHeight(topRow1Box.getPrefHeight());
         metroLines.setMinHeight(topRow1Box.getPrefHeight());
         colorButton1.setMinHeight(topRow1Box.getPrefHeight());
@@ -374,6 +376,10 @@ public class m3Workspace extends AppWorkspaceComponent{
             mapEditController.doAddLine();
             metroLines.getItems().add(mapEditController.getLineText());
             metroLines.setValue(mapEditController.getLineText());
+            String color = mapEditController.getLineColor().toString();
+                color = "#" + color.substring(2, 8);
+                colorButton1.setText(color);
+                colorButton1.setStyle("-fx-background-color: " + color);
         });
         
         metroLines.setOnAction(e->{
@@ -381,6 +387,31 @@ public class m3Workspace extends AppWorkspaceComponent{
             metroLines.setValue(lineName);
             mapEditController.doGetLine(lineName);
         });
+        
+        minusButton1.setOnAction(e->{
+            String removeLine = metroLines.getValue();
+            mapEditController.doRemoveLine(removeLine);
+            metroLines.getItems().remove(removeLine);
+        });
+        
+        colorButton1.setOnAction(e->{
+            mapEditController.doLineEdit();
+            if(mapEditController.getLineColor() == Color.BLACK){}
+            else{
+                String color = mapEditController.getLineColor().toString();
+                color = "#" + color.substring(2, 8);
+                colorButton1.setText(color);
+                colorButton1.setStyle("-fx-background-color: " + color);
+            }
+            if(mapEditController.getLineText().equals(metroLines.getValue())){}
+            else{
+                metroLines.getItems().remove(metroLines.getValue());
+                metroLines.getItems().add(mapEditController.getLineText());
+                metroLines.setValue(mapEditController.getLineText());
+                
+            }
+        });
+        
         
     }
     public void initStyle() {

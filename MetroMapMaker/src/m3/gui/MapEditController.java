@@ -37,6 +37,22 @@ public class MapEditController {
         dataManager = (m3Data)app.getDataComponent();
         appGUI = initGUI;
     }
+      
+    public void setLineText(String newText){
+        text = newText;
+    }
+    
+    public String getLineText(){
+        return text;
+    }
+    
+    public void setLineColor(Color newColor){
+        lineColor = newColor;
+    }
+    
+    public Color getLineColor(){
+        return lineColor;
+    }
     
     public void doAddLine(){
         // open up a dialog box to get name and color of line
@@ -69,24 +85,7 @@ public class MapEditController {
         
         dataManager.addShape(newLine);      
     }
-    
-    // HELPER FOR doAddLine    
-    public void setLineText(String newText){
-        text = newText;
-    }
-    
-    public String getLineText(){
-        return text;
-    }
-    
-    public void setLineColor(Color newColor){
-        lineColor = newColor;
-    }
-    
-    public Color getLineColor(){
-        return lineColor;
-    }
-    
+      
     public void doGetLine(String name){
         DraggableLine line = dataManager.getLine(name);
    
@@ -97,6 +96,7 @@ public class MapEditController {
                 dataManager.highlightShape(line.getEndLabel());
                 line.getStartLabel().draggable();
                 line.getEndLabel().draggable();
+                dataManager.setSelectedLine(line);
             }
             
             // UNHIGHLIGHT THE REST DISABLE EDITING
@@ -107,5 +107,28 @@ public class MapEditController {
                 dataManager.getLines().get(i).getEndLabel().disableDrag();
             }
         }
+    }
+    
+    public void doRemoveLine(String name){
+        dataManager.removeShape(dataManager.getLine(name));
+    }
+    
+    public void doLineEdit(){
+        newLineDialog dialog = new newLineDialog();
+        dialog.setInitText(dataManager.getSelectedLine().getText());
+        dialog.init(appGUI.getWindow());
+        dialog.setTitle("Editing a Line");
+        
+        dialog.showAndWait();
+        
+        if(dialog.isColorSelected())
+            this.setLineColor(dialog.getColor());
+        this.setLineText(dialog.getText());
+        
+        dataManager.getSelectedLine().setLineColor(this.getLineColor());
+        dataManager.getSelectedLine().setEndLabel(this.getLineText());
+        dataManager.getSelectedLine().setStartLabel(this.getLineText());
+        
+        
     }
 }
