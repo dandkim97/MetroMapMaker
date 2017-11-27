@@ -67,10 +67,7 @@ public class MapEditController {
 //        t2.xProperty().bind(c2.centerXProperty());
 //        t2.yProperty().bind(c2.centerYProperty());
         
-        dataManager.addShape(newLine);
-
-        
-        
+        dataManager.addShape(newLine);      
     }
     
     // HELPER FOR doAddLine    
@@ -88,5 +85,27 @@ public class MapEditController {
     
     public Color getLineColor(){
         return lineColor;
+    }
+    
+    public void doGetLine(String name){
+        DraggableLine line = dataManager.getLine(name);
+   
+        for(int i = 0; i < dataManager.getLines().size(); i++){
+            // HIGHLIGHT THE SELECTED LINE ENABLE EDITING
+            if(dataManager.getLines().get(i).getText().equals(name)){
+                dataManager.highlightShape(line.getStartLabel());
+                dataManager.highlightShape(line.getEndLabel());
+                line.getStartLabel().draggable();
+                line.getEndLabel().draggable();
+            }
+            
+            // UNHIGHLIGHT THE REST DISABLE EDITING
+            else{
+                dataManager.unhighlightShape(dataManager.getLines().get(i).getStartLabel());
+                dataManager.unhighlightShape(dataManager.getLines().get(i).getEndLabel());
+                dataManager.getLines().get(i).getStartLabel().disableDrag();
+                dataManager.getLines().get(i).getEndLabel().disableDrag();
+            }
+        }
     }
 }

@@ -19,6 +19,14 @@ public class DraggableText extends Text{
     
     public DraggableText(String text) {
         super(text);
-        setOnMouseDragged(e -> { setX(e.getX()); setY(e.getY()); });
+            setOnMouseDragged(e -> { setX(e.getX()); setY(e.getY()); });
+    }
+    
+    public void draggable(){
+        this.setOnMouseDragged(e -> { setX(e.getX()); setY(e.getY()); });
+    }
+    
+    public void disableDrag(){
+        this.setOnMouseDragged(e ->{});
     }
 }

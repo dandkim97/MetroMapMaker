@@ -7,6 +7,7 @@ package m3.data;
 
 import djf.AppTemplate;
 import djf.components.AppDataComponent;
+import java.util.ArrayList;
 import javafx.collections.ObservableList;
 import javafx.scene.Node;
 import javafx.scene.effect.BlurType;
@@ -41,6 +42,9 @@ public class m3Data implements AppDataComponent{
 
     // THIS IS THE SHAPE CURRENTLY SELECTED
     Shape selectedShape;
+    
+    // THIS IS FOR STORING ALL THE CREATED LINES
+    ArrayList<DraggableLine> lineList = new ArrayList<>();
     
     // FOR COLOR
     Color lineColor;
@@ -88,6 +92,10 @@ public class m3Data implements AppDataComponent{
 	return shapes;
     }
     
+    public ArrayList<DraggableLine> getLines(){
+        return lineList;
+    }
+    
     public Color getLineColor() {
 	return lineColor;
     }
@@ -125,6 +133,10 @@ public class m3Data implements AppDataComponent{
         shape.setEffect(highlightedEffect);
     }
     
+    public void unhighlightShape(Shape shape) {
+	shape.setEffect(null);
+    }
+    
     public void addShape(Shape shapeToAdd){
         shapes.add(shapeToAdd);
     }
@@ -143,6 +155,16 @@ public class m3Data implements AppDataComponent{
 
     public void addShape(DraggableLine newLine) {
         shapes.add(newLine);
+        lineList.add(newLine);
     }
     
+    // TO GET DRAGGABLE LINE FROM METROLINES COMBOBOX
+    public DraggableLine getLine(String name){
+        for(int i = 0; i < lineList.size(); i++){
+            if (lineList.get(i).getText().equals(name))
+                return lineList.get(i);
+            
+        }
+        return null;      
+    }
 }

@@ -376,6 +376,12 @@ public class m3Workspace extends AppWorkspaceComponent{
             metroLines.setValue(mapEditController.getLineText());
         });
         
+        metroLines.setOnAction(e->{
+            String lineName = metroLines.getValue();
+            metroLines.setValue(lineName);
+            mapEditController.doGetLine(lineName);
+        });
+        
     }
     public void initStyle() {
 	// NOTE THAT EACH CLASS SHOULD CORRESPOND TO
