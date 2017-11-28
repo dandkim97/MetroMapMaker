@@ -25,6 +25,8 @@ import javax.json.JsonWriterFactory;
 import javax.json.stream.JsonGenerator;
 import djf.components.AppDataComponent;
 import djf.components.AppFileComponent;
+import m3.data.DraggableLine;
+import m3.data.m3Data;
 
 /**
  * This class serves as the file management component for this application,
@@ -70,64 +72,66 @@ public class m3Files implements AppFileComponent {
      */
     @Override
     public void saveData(AppDataComponent data, String filePath) throws IOException {
-//	// GET THE DATA
-//	golData dataManager = (golData)data;
-//	
-//	// FIRST THE BACKGROUND COLOR
-//	Color bgColor = dataManager.getBackgroundColor();
-//	JsonObject bgColorJson = makeJsonColorObject(bgColor);
-//
-//	// NOW BUILD THE JSON OBJCTS TO SAVE
-//	JsonArrayBuilder arrayBuilder = Json.createArrayBuilder();
-//	ObservableList<Node> shapes = dataManager.getShapes();
-//	for (Node node : shapes) {
-//	    Shape shape = (Shape)node;
-//	    Draggable draggableShape = ((Draggable)shape);
-//	    String type = draggableShape.getShapeType();
-//	    double x = draggableShape.getX();
-//	    double y = draggableShape.getY();
-//	    double width = draggableShape.getWidth();
-//	    double height = draggableShape.getHeight();
-//	    JsonObject fillColorJson = makeJsonColorObject((Color)shape.getFill());
-//	    JsonObject outlineColorJson = makeJsonColorObject((Color)shape.getStroke());
-//	    double outlineThickness = shape.getStrokeWidth();
-//	    
-//	    JsonObject shapeJson = Json.createObjectBuilder()
-//		    .add(JSON_TYPE, type)
-//		    .add(JSON_X, x)
-//		    .add(JSON_Y, y)
-//		    .add(JSON_WIDTH, width)
-//		    .add(JSON_HEIGHT, height)
-//		    .add(JSON_FILL_COLOR, fillColorJson)
-//		    .add(JSON_OUTLINE_COLOR, outlineColorJson)
-//		    .add(JSON_OUTLINE_THICKNESS, outlineThickness).build();
-//	    arrayBuilder.add(shapeJson);
-//	}
-//	JsonArray shapesArray = arrayBuilder.build();
-//	
-//	// THEN PUT IT ALL TOGETHER IN A JsonObject
-//	JsonObject dataManagerJSO = Json.createObjectBuilder()
-//		.add(JSON_BG_COLOR, bgColorJson)
-//		.add(JSON_SHAPES, shapesArray)
-//		.build();
-//	
-//	// AND NOW OUTPUT IT TO A JSON FILE WITH PRETTY PRINTING
-//	Map<String, Object> properties = new HashMap<>(1);
-//	properties.put(JsonGenerator.PRETTY_PRINTING, true);
-//	JsonWriterFactory writerFactory = Json.createWriterFactory(properties);
-//	StringWriter sw = new StringWriter();
-//	JsonWriter jsonWriter = writerFactory.createWriter(sw);
-//	jsonWriter.writeObject(dataManagerJSO);
-//	jsonWriter.close();
-//
-//	// INIT THE WRITER
-//	OutputStream os = new FileOutputStream(filePath);
-//	JsonWriter jsonFileWriter = Json.createWriter(os);
-//	jsonFileWriter.writeObject(dataManagerJSO);
-//	String prettyPrinted = sw.toString();
-//	PrintWriter pw = new PrintWriter(filePath);
-//	pw.write(prettyPrinted);
-//	pw.close();
+	// GET THE DATA
+	m3Data dataManager = (m3Data)data;
+	
+	// FIRST THE BACKGROUND COLOR
+	Color bgColor = dataManager.getBackgroundColor();
+	JsonObject bgColorJson = makeJsonColorObject(bgColor);
+
+	// NOW BUILD THE JSON OBJCTS TO SAVE
+	JsonArrayBuilder arrayBuilder = Json.createArrayBuilder();
+	ObservableList<Node> shapes = dataManager.getShapes();
+	for (Node node : shapes) {
+            if (node instanceof DraggableLine){
+                DraggableLine shape = (DraggableLine)node;
+                DraggableLine dShape = ((DraggableLine)shape);
+                String type = "Draggable Line";
+                double x = 50;//draggableShape.getX();
+                double y = 50;//draggableShape.getY();
+                double width = 10;//draggableShape.getWidth();
+                double height = 5;//draggableShape.getHeight();
+                JsonObject fillColorJson = makeJsonColorObject((Color)dShape.getColor());
+//                JsonObject outlineColorJson = makeJsonColorObject((Color)shape.getStroke());
+                double outlineThickness = 3;//shape.getStrokeWidth();
+
+                JsonObject shapeJson = Json.createObjectBuilder()
+                        .add(JSON_TYPE, type)
+                        .add(JSON_X, x)
+                        .add(JSON_Y, y)
+                        .add(JSON_WIDTH, width)
+                        .add(JSON_HEIGHT, height)
+                        .add(JSON_FILL_COLOR, fillColorJson)
+//                        .add(JSON_OUTLINE_COLOR, outlineColorJson)
+                        .add(JSON_OUTLINE_THICKNESS, outlineThickness).build();
+                arrayBuilder.add(shapeJson);
+            }
+	}
+	JsonArray shapesArray = arrayBuilder.build();
+	
+	// THEN PUT IT ALL TOGETHER IN A JsonObject
+	JsonObject dataManagerJSO = Json.createObjectBuilder()
+		.add(JSON_BG_COLOR, bgColorJson)
+		.add(JSON_SHAPES, shapesArray)
+		.build();
+	
+	// AND NOW OUTPUT IT TO A JSON FILE WITH PRETTY PRINTING
+	Map<String, Object> properties = new HashMap<>(1);
+	properties.put(JsonGenerator.PRETTY_PRINTING, true);
+	JsonWriterFactory writerFactory = Json.createWriterFactory(properties);
+	StringWriter sw = new StringWriter();
+	JsonWriter jsonWriter = writerFactory.createWriter(sw);
+	jsonWriter.writeObject(dataManagerJSO);
+	jsonWriter.close();
+
+	// INIT THE WRITER
+	OutputStream os = new FileOutputStream(filePath);
+	JsonWriter jsonFileWriter = Json.createWriter(os);
+	jsonFileWriter.writeObject(dataManagerJSO);
+	String prettyPrinted = sw.toString();
+	PrintWriter pw = new PrintWriter(filePath);
+	pw.write(prettyPrinted);
+	pw.close();
     }
     
     private JsonObject makeJsonColorObject(Color color) {

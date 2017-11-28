@@ -201,6 +201,10 @@ public class m3Data implements AppDataComponent{
 	canvas.setBackground(background);
     }
     
+    public Color getBackgroundColor(){
+        return backgroundColor;
+    }
+    
     public void setSelectedLine(DraggableLine lineSelected){
         selectedLine = lineSelected;
     }
