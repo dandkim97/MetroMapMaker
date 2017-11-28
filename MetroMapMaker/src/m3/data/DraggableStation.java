@@ -13,10 +13,29 @@ import javafx.scene.shape.Circle;
  */
 public class DraggableStation extends Circle{
 
+    String name;
+    
     public DraggableStation(double x, double y, double radius) {
         super(x, y, radius);
         setOnMouseDragged(e -> { centerXProperty().set(e.getX());
                                  centerYProperty().set(e.getY()); });
+    }
+    
+    public void draggable(){
+        this.setOnMouseDragged(e -> { centerXProperty().set(e.getX());
+                                      centerYProperty().set(e.getY()); });
+    }
+    
+    public void disableDrag(){
+        this.setOnMouseDragged(e ->{});
+    }
+    
+    public void setName(String newName){
+        name = newName;
+    }
+    
+    public String getName(){
+        return name;
     }
     
 }

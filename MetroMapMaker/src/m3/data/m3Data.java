@@ -43,9 +43,16 @@ public class m3Data implements AppDataComponent{
     // THIS IS THE SHAPE/LINE CURRENTLY SELECTED
     Shape selectedShape;
     DraggableLine selectedLine;
+    DraggableStation selectedStation;
     
     // THIS IS FOR STORING ALL THE CREATED LINES
     ArrayList<DraggableLine> lineList = new ArrayList<>();
+    
+    // THIS IS FOR STORING ALL THE CREATED STATIONS
+    ArrayList<DraggableStation> stationList = new ArrayList<>();
+    
+    // THIS IS FOR STORING ALL THE STATIONS' TEXT LABELS
+    ArrayList<DraggableText> textList = new ArrayList<>();
     
     // FOR COLOR
     Color lineColor;
@@ -97,6 +104,14 @@ public class m3Data implements AppDataComponent{
         return lineList;
     }
     
+    public ArrayList<DraggableStation> getStations(){
+        return stationList;
+    }
+    
+    public ArrayList<DraggableText> getTexts(){
+        return textList;
+    }
+    
     public Color getLineColor() {
 	return lineColor;
     }
@@ -142,6 +157,38 @@ public class m3Data implements AppDataComponent{
         shapes.add(shapeToAdd);
     }
     
+    public void addShape(DraggableLine newLine) {
+        shapes.add(newLine);
+        lineList.add(newLine);
+    }
+    
+    public void addStation(DraggableStation newStation, DraggableText newText){
+        shapes.add(newStation);
+        shapes.add(newText);
+        stationList.add(newStation);
+        textList.add(newText);
+    }
+            
+    public void removeShape(Shape shapeToRemove) {
+	shapes.remove(shapeToRemove);
+    }
+    
+    public void removeShape(DraggableLine lineToRemove) {
+	shapes.remove(lineToRemove);
+        lineList.remove(lineToRemove);
+    }
+    
+    public void removeStation(DraggableStation stationToRemove){
+        shapes.remove(stationToRemove);  
+        stationList.remove(stationToRemove);
+        
+    }
+    
+    public void removeText(DraggableText textToRemove){
+        shapes.remove(textToRemove);
+        textList.remove(textToRemove);
+    }
+    
     public void resetData() {
     }
 
@@ -153,20 +200,6 @@ public class m3Data implements AppDataComponent{
 	Background background = new Background(fill);
 	canvas.setBackground(background);
     }
-
-    public void addShape(DraggableLine newLine) {
-        shapes.add(newLine);
-        lineList.add(newLine);
-    }
-    
-    public void removeShape(Shape shapeToRemove) {
-	shapes.remove(shapeToRemove);
-    }
-    
-    public void removeShape(DraggableLine lineToRemove) {
-	shapes.remove(lineToRemove);
-        lineList.remove(lineToRemove);
-    }
     
     public void setSelectedLine(DraggableLine lineSelected){
         selectedLine = lineSelected;
@@ -174,6 +207,14 @@ public class m3Data implements AppDataComponent{
     
     public DraggableLine getSelectedLine(){
         return selectedLine;
+    }
+    
+    public void setSelectedStation(DraggableStation stationSelected){
+        selectedStation = stationSelected;
+    }
+    
+    public DraggableStation getSelectedStation(){
+        return selectedStation;
     }
     
     // TO GET DRAGGABLE LINE FROM METROLINES COMBOBOX
@@ -185,4 +226,24 @@ public class m3Data implements AppDataComponent{
         }
         return null;      
     }
+    
+    // TO GET DRAGGABLE LINE FROM METROSTATIONS COMBOBOX
+    public DraggableStation getStation(String name){
+        for(int i = 0; i < stationList.size(); i++){
+            if (stationList.get(i).getName().equals(name))
+                return stationList.get(i);
+            
+        }
+        return null;   
+    }
+    
+    public DraggableText getSText(String name){
+        for(int i = 0; i < textList.size(); i++){
+            if (textList.get(i).getText().equals("    "+name)){
+                return textList.get(i);
+            }
+        }
+        return null;
+    }
+    
 }

@@ -3,8 +3,10 @@ package m3.gui;
 import djf.AppTemplate;
 import djf.ui.AppGUI;
 import static java.awt.Color.white;
+import java.util.Optional;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
+import javafx.scene.control.TextInputDialog;
 import javafx.scene.layout.Pane;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Circle;
@@ -18,6 +20,8 @@ import javafx.scene.text.Text;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
 import m3.data.DraggableLine;
+import m3.data.DraggableStation;
+import m3.data.DraggableText;
 import m3.data.m3Data;
 
 /**
@@ -69,19 +73,6 @@ public class MapEditController {
         newLine.setLineColor(this.getLineColor());
         newLine.setEndLabel(this.getLineText());
         newLine.setStartLabel(this.getLineText());
-//        Line line = new Line(100, 100, 500, 100);
-//        line.setStroke(this.getLineColor());
-//        Text t = new Text(this.getLineText());
-//        t.setFill(this.getLineColor());
-//        Text t2 = new Text(this.getLineText());
-//        t2.setFill(this.getLineColor());
-//        Circle c1 = new Circle(80, 100, 50);
-//        c1.setCenterX(60);
-//        Circle c2 = new Circle(510, 100, 50);
-//        t.xProperty().bind(c1.centerXProperty());
-//        t.yProperty().bind(c1.centerYProperty());
-//        t2.xProperty().bind(c2.centerXProperty());
-//        t2.yProperty().bind(c2.centerYProperty());
         
         dataManager.addShape(newLine);      
     }
@@ -97,6 +88,7 @@ public class MapEditController {
                 line.getStartLabel().draggable();
                 line.getEndLabel().draggable();
                 dataManager.setSelectedLine(line);
+                this.setLineColor(line.getColor());
             }
             
             // UNHIGHLIGHT THE REST DISABLE EDITING
@@ -130,5 +122,48 @@ public class MapEditController {
         dataManager.getSelectedLine().setStartLabel(this.getLineText());
         
         
+    }
+    
+    public void doAddStation(){
+        TextInputDialog dialog = new TextInputDialog();
+        dialog.setTitle("Making a New Station");
+        dialog.setContentText("Enter your station name:");
+        
+        Optional<String> result = dialog.showAndWait();
+        DraggableText dtext = new DraggableText("    "+ result.get());
+        dtext.disableDrag();
+        this.setLineText(result.get());
+        
+        DraggableStation station = new DraggableStation(150, 150, 10);
+        dtext.xProperty().bindBidirectional(station.centerXProperty());
+        dtext.yProperty().bindBidirectional(station.centerYProperty());
+        station.setName(result.get());
+        dataManager.addStation(station, dtext);
+        
+    }
+    
+    public void doGetStation(String name){
+        DraggableStation station = dataManager.getStation(name);
+        
+        
+        for(int i = 0; i < dataManager.getStations().size(); i++){
+            // HIGHLIGHT THE SELECTED LINE ENABLE EDITING
+            if(dataManager.getStations().get(i).getName().equals(name)){
+                station.draggable();
+                dataManager.setSelectedStation(station);
+//                this.setStationColor(station.getColor());
+            }
+            
+            // UNHIGHLIGHT THE REST DISABLE EDITING
+            else{
+                dataManager.getStations().get(i).disableDrag();
+
+            }
+        }
+    }
+
+    public void doRemoveStation(String name) {
+        dataManager.removeStation(dataManager.getStation(name));
+        dataManager.removeText(dataManager.getSText(name));
     }
 }

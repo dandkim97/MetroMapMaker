@@ -19,6 +19,8 @@ public class DraggableLine extends Group{
     DraggableText startText;
     DraggableText endText;
     
+    Color lineColor;
+    
     public DraggableLine(double startx, double starty, double endx, double endy) {
         line = new Line(startx, starty, endx, endy);
         start = new DraggableStation(startx, starty, 3);
@@ -63,6 +65,11 @@ public class DraggableLine extends Group{
         this.line.setStroke(color);
         this.startText.setFill(color);
         this.endText.setFill(color);
+        lineColor = color;
+    }
+    
+    public Color getColor(){
+        return lineColor;
     }
     
     public Line getLine(){

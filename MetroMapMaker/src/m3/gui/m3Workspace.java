@@ -386,6 +386,10 @@ public class m3Workspace extends AppWorkspaceComponent{
             String lineName = metroLines.getValue();
             metroLines.setValue(lineName);
             mapEditController.doGetLine(lineName);
+            String color = mapEditController.getLineColor().toString();
+                color = "#" + color.substring(2, 8);
+                colorButton1.setText(color);
+                colorButton1.setStyle("-fx-background-color: " + color);
         });
         
         minusButton1.setOnAction(e->{
@@ -412,8 +416,25 @@ public class m3Workspace extends AppWorkspaceComponent{
             }
         });
         
+        plusButton2.setOnAction(e->{
+            mapEditController.doAddStation();
+            metroStations.getItems().add(mapEditController.getLineText());
+            metroStations.setValue(mapEditController.getLineText());
+        });
         
+        minusButton2.setOnAction(e->{
+            String removeStation = metroStations.getValue();
+            mapEditController.doRemoveStation(removeStation);
+            metroStations.getItems().remove(removeStation);
+        });
+        
+        metroStations.setOnAction(e->{
+            String stationName = metroStations.getValue();
+            metroStations.setValue(stationName);
+            mapEditController.doGetStation(stationName);
+        });
     }
+    
     public void initStyle() {
 	// NOTE THAT EACH CLASS SHOULD CORRESPOND TO
 	// A STYLE CLASS SPECIFIED IN THIS APPLICATION'S
