@@ -444,6 +444,10 @@ public class m3Workspace extends AppWorkspaceComponent{
         colorButton4.setOnAction(e->{
             mapEditController.doSelectBackgroundColor();
         });
+        
+        imageBgButton.setOnAction(e->{
+            mapEditController.doImageBackground(); 
+        });
     }
     
     public void initStyle() {

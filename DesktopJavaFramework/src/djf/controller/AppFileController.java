@@ -255,6 +255,34 @@ public class AppFileController {
         }
     }
     
+    public String promptToOpenPic() {
+        // WE'LL NEED TO GET CUSTOMIZED STUFF WITH THIS
+        PropertiesManager props = PropertiesManager.getPropertiesManager();
+	
+        // AND NOW ASK THE USER FOR THE FILE TO OPEN
+        FileChooser fc = new FileChooser();
+        fc.setInitialDirectory(new File(PATH_WORK));
+	fc.setTitle(props.getProperty(LOAD_WORK_TITLE));
+        File selectedFile = fc.showOpenDialog(app.getGUI().getWindow());
+
+        // ONLY OPEN A NEW FILE IF THE USER SAYS OK
+        if (selectedFile != null) {
+            try {
+		app.getWorkspaceComponent().resetWorkspace();
+                app.getDataComponent().resetData();
+                app.getFileComponent().loadData(app.getDataComponent(), selectedFile.getAbsolutePath());              
+		app.getWorkspaceComponent().activateWorkspace(app.getGUI().getAppPane());               
+                
+            } catch (Exception e) {}
+            try{
+                String str = selectedFile.getAbsoluteFile().toURI().toURL().toString();
+                return str;
+            } catch (Exception e) {}
+            
+        }
+        return null;
+    }
+    
     public void markFileAsNotSaved() {
         saved = false;
     }

@@ -35,6 +35,7 @@ public class MapEditController {
     
     String text;
     Color lineColor;
+    String image = "";
     
     public MapEditController(AppTemplate initApp, AppGUI initGUI){
         app = initApp;
@@ -171,8 +172,32 @@ public class MapEditController {
         m3Workspace workspace = (m3Workspace)app.getWorkspaceComponent();
 	Color selectedColor = workspace.getBackgroundColorPicker().getValue();
 	if (selectedColor != null) {
-	    dataManager.setBackgroundColor(selectedColor);
-	    app.getGUI().updateToolbarControls(false);
+            if(image.equals("")){
+                dataManager.setBackgroundColor(selectedColor);
+                app.getGUI().updateToolbarControls(false);
+            }
+            else{
+                dataManager.setBackgroundWithImage(selectedColor, this.getImage());
+            }
 	}
+    }
+    
+    public void doImageBackground(){
+        image = app.getGUI().getFileController().promptToOpenPic();
+        this.setImage(image);
+        if(!image.equals("")){
+            m3Workspace workspace = (m3Workspace)app.getWorkspaceComponent();
+            workspace.getCanvas().setStyle("-fx-background-image: url('" +image+ "');"
+                                          +  "-fx-background-position: center center; " 
+                                          +  "-fx-background-repeat: stretch;");
+        }
+    }
+    
+    public void setImage(String newImage){
+        image = newImage;
+    }
+    
+    public String getImage(){
+        return image;
     }
 }

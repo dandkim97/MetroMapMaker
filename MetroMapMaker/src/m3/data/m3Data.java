@@ -201,6 +201,15 @@ public class m3Data implements AppDataComponent{
 	canvas.setBackground(background);
     }
     
+    public void setBackgroundWithImage(Color bgColor, String image){
+        backgroundColor = bgColor;
+        m3Workspace workspace = (m3Workspace)app.getWorkspaceComponent();
+        workspace.getCanvas().setStyle("-fx-background-image: url('" + image + "');" 
+                                    +  "-fx-background-color: #"+bgColor.toString().substring(2,8)+ ";"
+                                    +  "-fx-background-position: center center; " 
+                                    +  "-fx-background-repeat: stretch;");
+    }
+    
     public Color getBackgroundColor(){
         return backgroundColor;
     }
