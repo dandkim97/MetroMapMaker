@@ -159,6 +159,13 @@ public class m3Workspace extends AppWorkspaceComponent{
     // FOR DISPLAYING DEBUG STUFF
     Text debugText;
     
+    
+    // ACCESSOR METHODS EVENT HANDLERS MAY NEED
+    
+    public ColorPicker getBackgroundColorPicker() {
+        return colorButton4;
+    }
+    
     public m3Workspace(AppTemplate initApp) {
 	// KEEP THIS FOR LATER
 	app = initApp;
@@ -432,6 +439,10 @@ public class m3Workspace extends AppWorkspaceComponent{
             String stationName = metroStations.getValue();
             metroStations.setValue(stationName);
             mapEditController.doGetStation(stationName);
+        });
+        
+        colorButton4.setOnAction(e->{
+            mapEditController.doSelectBackgroundColor();
         });
     }
     

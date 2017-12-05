@@ -166,4 +166,13 @@ public class MapEditController {
         dataManager.removeStation(dataManager.getStation(name));
         dataManager.removeText(dataManager.getSText(name));
     }
+    
+    public void doSelectBackgroundColor(){
+        m3Workspace workspace = (m3Workspace)app.getWorkspaceComponent();
+	Color selectedColor = workspace.getBackgroundColorPicker().getValue();
+	if (selectedColor != null) {
+	    dataManager.setBackgroundColor(selectedColor);
+	    app.getGUI().updateToolbarControls(false);
+	}
+    }
 }

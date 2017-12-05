@@ -77,7 +77,7 @@ public class m3Files implements AppFileComponent {
 	
 	// FIRST THE BACKGROUND COLOR
 	Color bgColor = dataManager.getBackgroundColor();
-	JsonObject bgColorJson = makeJsonColorObject(bgColor);
+//	JsonObject bgColorJson = makeJsonColorObject(bgColor);
 
 	// NOW BUILD THE JSON OBJCTS TO SAVE
 	JsonArrayBuilder arrayBuilder = Json.createArrayBuilder();
@@ -111,7 +111,7 @@ public class m3Files implements AppFileComponent {
 	
 	// THEN PUT IT ALL TOGETHER IN A JsonObject
 	JsonObject dataManagerJSO = Json.createObjectBuilder()
-		.add(JSON_BG_COLOR, bgColorJson)
+//		.add(JSON_BG_COLOR, bgColorJson)
 		.add(JSON_SHAPES, shapesArray)
 		.build();
 	
@@ -158,24 +158,24 @@ public class m3Files implements AppFileComponent {
      */
     @Override
     public void loadData(AppDataComponent data, String filePath) throws IOException {
-//	// CLEAR THE OLD DATA OUT
-//	golData dataManager = (golData)data;
-//	dataManager.resetData();
-//	
-//	// LOAD THE JSON FILE WITH ALL THE DATA
-//	JsonObject json = loadJSONFile(filePath);
-//	
-//	// LOAD THE BACKGROUND COLOR
+	// CLEAR THE OLD DATA OUT
+	m3Data dataManager = (m3Data)data;
+	dataManager.resetData();
+	
+	// LOAD THE JSON FILE WITH ALL THE DATA
+	JsonObject json = loadJSONFile(filePath);
+	
+	// LOAD THE BACKGROUND COLOR
 //	Color bgColor = loadColor(json, JSON_BG_COLOR);
 //	dataManager.setBackgroundColor(bgColor);
-//	
-//	// AND NOW LOAD ALL THE SHAPES
-//	JsonArray jsonShapeArray = json.getJsonArray(JSON_SHAPES);
-//	for (int i = 0; i < jsonShapeArray.size(); i++) {
+	
+	// AND NOW LOAD ALL THE SHAPES
+	JsonArray jsonShapeArray = json.getJsonArray(JSON_SHAPES);
+	for (int i = 0; i < jsonShapeArray.size(); i++) {
 //	    JsonObject jsonShape = jsonShapeArray.getJsonObject(i);
 //	    Shape shape = loadShape(jsonShape);
 //	    dataManager.addShape(shape);
-//	}
+	}
     }
     
     private double getDataAsDouble(JsonObject json, String dataName) {
