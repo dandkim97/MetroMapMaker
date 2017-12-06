@@ -59,6 +59,14 @@ public class MapEditController {
         return lineColor;
     }
     
+    public void doLineThickness(double value, String line){
+        dataManager.getLine(line).getLine().setStrokeWidth(value);
+    }
+    
+    public void doStationThickness(double value, String station){
+        dataManager.getStation(station).setRadius(value);
+    }
+    
     public void doAddLine(){
         // open up a dialog box to get name and color of line
         // make a new line with coordinates and size already
@@ -215,7 +223,7 @@ public class MapEditController {
     
     public void doRotateStationLabel(String name){
         if(dataManager.getSText(name).getRotate() == 0)
-            dataManager.getSText(name).setRotate(-90);
+            dataManager.getSText(name).setRotate(90);
         else
             dataManager.getSText(name).setRotate(0);
     }

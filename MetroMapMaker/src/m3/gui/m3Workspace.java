@@ -217,7 +217,8 @@ public class m3Workspace extends AppWorkspaceComponent{
         removeStationButton.setMinHeight(midRow1Box.getPrefHeight());
         listButton.setMinHeight(midRow1Box.getPrefHeight());
         
-        slider1 = new Slider();
+        slider1 = new Slider(1, 10, 20);
+        slider1.setValue(1);
         
         row1Box.getChildren().add(topRow1Box);
         row1Box.getChildren().add(midRow1Box);
@@ -250,7 +251,8 @@ public class m3Workspace extends AppWorkspaceComponent{
         snapButton.setMinHeight(midRow2Box.getPrefHeight());
         moveButton.setMinHeight(midRow2Box.getPrefHeight());
         turnButton.setMinHeight(midRow2Box.getPrefHeight());
-        slider2 = new Slider();
+        slider2 = new Slider(10, 15, 20);
+        slider2.setValue(1);
         
         row2Box.getChildren().add(topRow2Box);
         row2Box.getChildren().add(midRow2Box);
@@ -421,6 +423,16 @@ public class m3Workspace extends AppWorkspaceComponent{
                 metroLines.setValue(mapEditController.getLineText());
                 
             }
+        });
+        
+        slider1.setOnMouseDragged(e->{
+            String line = metroLines.getValue();
+            mapEditController.doLineThickness(slider1.getValue(), line);
+        });
+        
+        slider2.setOnMouseDragged(e->{
+            String station = metroStations.getValue();
+            mapEditController.doStationThickness(slider2.getValue(), station);
         });
         
         plusButton2.setOnAction(e->{
