@@ -435,6 +435,11 @@ public class m3Workspace extends AppWorkspaceComponent{
             metroStations.getItems().remove(removeStation);
         });
         
+        moveButton.setOnAction(e->{
+            String station = metroStations.getValue();
+            mapEditController.doMoveStationLabel(station);
+        });
+        
         metroStations.setOnAction(e->{
             String stationName = metroStations.getValue();
             metroStations.setValue(stationName);

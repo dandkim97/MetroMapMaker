@@ -252,7 +252,7 @@ public class m3Data implements AppDataComponent{
     
     public DraggableText getSText(String name){
         for(int i = 0; i < textList.size(); i++){
-            if (textList.get(i).getText().equals("    "+name)){
+            if (textList.get(i).getText().equals(name)){
                 return textList.get(i);
             }
         }

@@ -131,13 +131,13 @@ public class MapEditController {
         dialog.setContentText("Enter your station name:");
         
         Optional<String> result = dialog.showAndWait();
-        DraggableText dtext = new DraggableText("    "+ result.get());
+        DraggableText dtext = new DraggableText(result.get());
         dtext.disableDrag();
         this.setLineText(result.get());
         
         DraggableStation station = new DraggableStation(150, 150, 10);
-        dtext.xProperty().bindBidirectional(station.centerXProperty());
-        dtext.yProperty().bindBidirectional(station.centerYProperty());
+        dtext.xProperty().bindBidirectional(station.getTopRightX());
+        dtext.yProperty().bindBidirectional(station.getTopRightY());
         station.setName(result.get());
         dataManager.addStation(station, dtext);
         
@@ -166,6 +166,46 @@ public class MapEditController {
     public void doRemoveStation(String name) {
         dataManager.removeStation(dataManager.getStation(name));
         dataManager.removeText(dataManager.getSText(name));
+    }
+    
+    public void doMoveStationLabel(String name){
+        dataManager.getStation(name).clickState();
+        double centerX = dataManager.getStation(name).getCenterX();
+        double centerY = dataManager.getStation(name).getCenterY();
+        dataManager.getStation(name).draggable();
+        if(dataManager.getStation(name).getClicks() == 0){
+            dataManager.getStation(name).getTopRightX().set(centerX+15);
+            dataManager.getStation(name).getTopRightY().set(centerY-15);
+            dataManager.getSText(name).xProperty().bindBidirectional
+                    (dataManager.getStation(name).getTopRightX());
+            dataManager.getSText(name).yProperty().bindBidirectional
+                    (dataManager.getStation(name).getTopRightY());
+        }
+        if(dataManager.getStation(name).getClicks() == 1){
+            dataManager.getStation(name).getTopLeftX().set(centerX-50);
+            dataManager.getStation(name).getTopLeftY().set(centerY-15);
+            dataManager.getSText(name).xProperty().bindBidirectional
+                    (dataManager.getStation(name).getTopLeftX());
+            dataManager.getSText(name).yProperty().bindBidirectional
+                    (dataManager.getStation(name).getTopLeftY());
+        }
+        if(dataManager.getStation(name).getClicks() == 2){
+            dataManager.getStation(name).getBotLeftX().set(centerX-50);
+            dataManager.getStation(name).getBotLeftY().set(centerY+25);
+            dataManager.getSText(name).xProperty().bindBidirectional
+                    (dataManager.getStation(name).getBotLeftX());
+            dataManager.getSText(name).yProperty().bindBidirectional
+                    (dataManager.getStation(name).getBotLeftY());
+        }
+        if(dataManager.getStation(name).getClicks() == 3){
+            dataManager.getStation(name).getBotRightX().set(centerX+15);
+            dataManager.getStation(name).getBotRightY().set(centerY+25);
+            dataManager.getSText(name).xProperty().bindBidirectional
+                    (dataManager.getStation(name).getBotRightX());
+            dataManager.getSText(name).yProperty().bindBidirectional
+                    (dataManager.getStation(name).getBotRightY());
+        }
+        
     }
     
     public void doSelectBackgroundColor(){
