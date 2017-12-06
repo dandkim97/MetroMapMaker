@@ -173,6 +173,8 @@ public class MapEditController {
         double centerX = dataManager.getStation(name).getCenterX();
         double centerY = dataManager.getStation(name).getCenterY();
         dataManager.getStation(name).draggable();
+        
+        // TOP RIGHT
         if(dataManager.getStation(name).getClicks() == 0){
             dataManager.getStation(name).getTopRightX().set(centerX+15);
             dataManager.getStation(name).getTopRightY().set(centerY-15);
@@ -181,6 +183,7 @@ public class MapEditController {
             dataManager.getSText(name).yProperty().bindBidirectional
                     (dataManager.getStation(name).getTopRightY());
         }
+        // TOP LEFT
         if(dataManager.getStation(name).getClicks() == 1){
             dataManager.getStation(name).getTopLeftX().set(centerX-50);
             dataManager.getStation(name).getTopLeftY().set(centerY-15);
@@ -189,6 +192,7 @@ public class MapEditController {
             dataManager.getSText(name).yProperty().bindBidirectional
                     (dataManager.getStation(name).getTopLeftY());
         }
+        // BOT LEFT
         if(dataManager.getStation(name).getClicks() == 2){
             dataManager.getStation(name).getBotLeftX().set(centerX-50);
             dataManager.getStation(name).getBotLeftY().set(centerY+25);
@@ -197,6 +201,7 @@ public class MapEditController {
             dataManager.getSText(name).yProperty().bindBidirectional
                     (dataManager.getStation(name).getBotLeftY());
         }
+        // BOT RIGHT
         if(dataManager.getStation(name).getClicks() == 3){
             dataManager.getStation(name).getBotRightX().set(centerX+15);
             dataManager.getStation(name).getBotRightY().set(centerY+25);
@@ -206,6 +211,13 @@ public class MapEditController {
                     (dataManager.getStation(name).getBotRightY());
         }
         
+    }
+    
+    public void doRotateStationLabel(String name){
+        if(dataManager.getSText(name).getRotate() == 0)
+            dataManager.getSText(name).setRotate(-90);
+        else
+            dataManager.getSText(name).setRotate(0);
     }
     
     public void doSelectBackgroundColor(){

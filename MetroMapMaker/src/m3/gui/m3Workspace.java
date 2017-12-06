@@ -440,6 +440,11 @@ public class m3Workspace extends AppWorkspaceComponent{
             mapEditController.doMoveStationLabel(station);
         });
         
+        turnButton.setOnAction(e->{
+            String station = metroStations.getValue();
+            mapEditController.doRotateStationLabel(station);
+        });
+        
         metroStations.setOnAction(e->{
             String stationName = metroStations.getValue();
             metroStations.setValue(stationName);
