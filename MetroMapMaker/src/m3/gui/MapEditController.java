@@ -4,6 +4,8 @@ import djf.AppTemplate;
 import djf.ui.AppGUI;
 import static java.awt.Color.white;
 import java.util.Optional;
+import javafx.scene.control.Alert;
+import javafx.scene.control.Alert.AlertType;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextInputDialog;
@@ -68,6 +70,7 @@ public class MapEditController {
     }
     
     public void doAddStationToLine(String station, String line){
+        // CUT INITIAL LINE
         dataManager.getLine(line).getPath().getElements().remove(dataManager.getLine(line).getLineTo());
         
         // ADD NEW LINE TO STATION ADDED
@@ -76,8 +79,13 @@ public class MapEditController {
         dataManager.getLine(line).getPath().getElements().add(newLine);
         newLine.xProperty().bindBidirectional(dataManager.getStation(station).centerXProperty());
         newLine.yProperty().bindBidirectional(dataManager.getStation(station).centerYProperty());
-        
+          
+        // PASTE CUT LINE
         dataManager.getLine(line).getPath().getElements().add(dataManager.getLine(line).getLineTo());
+        
+        // ADD TO LIST OF STATIONS IN LINE
+        dataManager.getLine(line).getLineList().add(station);
+      
     }
             
     public void doAddLine(){
@@ -125,6 +133,18 @@ public class MapEditController {
     
     public void doRemoveLine(String name){
         dataManager.removeShape(dataManager.getLine(name));
+    }
+    
+    public void doLineList(String name){
+        String message = "";
+        Alert alert = new Alert(AlertType.INFORMATION);
+        alert.setTitle("Metro Line List");
+        alert.setHeaderText("List of Stations for Line " + name);
+        for(int i = 0; i < dataManager.getLine(name).getLineList().size(); i++){
+            message += dataManager.getLine(name).getLineList().get(i) + "\n";
+        }
+        alert.setContentText(message);
+        alert.showAndWait();
     }
     
     public void doLineEdit(){
