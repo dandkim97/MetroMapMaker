@@ -414,6 +414,11 @@ public class m3Workspace extends AppWorkspaceComponent{
             metroLines.getItems().remove(removeLine);
         });
         
+        listButton.setOnAction(e->{
+            String line = metroLines.getValue();
+            mapEditController.doLineList(line);
+        });
+        
         colorButton1.setOnAction(e->{
             mapEditController.doLineEdit();
             if(mapEditController.getLineColor() == Color.BLACK){}

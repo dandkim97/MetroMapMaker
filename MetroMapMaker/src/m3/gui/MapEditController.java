@@ -87,6 +87,10 @@ public class MapEditController {
         dataManager.getLine(line).getLineList().add(station);
       
     }
+    
+    public void doRemoveStationToLine(String station, String line){
+        
+    }
             
     public void doAddLine(){
         // open up a dialog box to get name and color of line

@@ -1,5 +1,6 @@
 package m3.data;
 
+import java.util.ArrayList;
 import javafx.collections.ObservableList;
 import javafx.scene.Group;
 import javafx.scene.Node;
@@ -24,6 +25,8 @@ public class DraggableLine extends Group{
     DraggableText startText;
     DraggableText endText;
     
+    ArrayList<String> lineList;
+    
     Color lineColor;
     
     public DraggableLine(double startx, double starty, double endx, double endy) {
@@ -34,6 +37,7 @@ public class DraggableLine extends Group{
         end = new DraggableStation(endx, endy, 3);
         startText = new DraggableText();
         endText = new DraggableText();
+        lineList = new ArrayList<>();
         
         path.getElements().add(begin);
         path.getElements().add(line);
@@ -56,7 +60,14 @@ public class DraggableLine extends Group{
         children.add(endText);
     }
 
+    public void addStationLine(String name){
+        lineList.add(name);
+    }
+    
     // GETTERS
+    public ArrayList<String> getLineList(){
+        return lineList;
+    }
     
     public DraggableText getStartLabel(){
         return startText;
