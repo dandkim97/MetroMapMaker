@@ -250,6 +250,15 @@ public class m3Data implements AppDataComponent{
         return null;   
     }
     
+    public DraggableStation getStationByClick(double x, double y){
+        for(int i = 0; i < stationList.size(); i++){
+            if (stationList.get(i).contains(x, y))
+                return stationList.get(i);
+            
+        }
+        return null;   
+    }
+    
     public DraggableText getSText(String name){
         for(int i = 0; i < textList.size(); i++){
             if (textList.get(i).getText().equals(name)){

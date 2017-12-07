@@ -60,13 +60,26 @@ public class MapEditController {
     }
     
     public void doLineThickness(double value, String line){
-        dataManager.getLine(line).getLine().setStrokeWidth(value);
+        dataManager.getLine(line).getPath().setStrokeWidth(value);
     }
     
     public void doStationThickness(double value, String station){
         dataManager.getStation(station).setRadius(value);
     }
     
+    public void doAddStationToLine(String station, String line){
+        dataManager.getLine(line).getPath().getElements().remove(dataManager.getLine(line).getLineTo());
+        
+        // ADD NEW LINE TO STATION ADDED
+        LineTo newLine = new LineTo(dataManager.getStation(station).getCenterX(), 
+                                            dataManager.getStation(station).getCenterY());
+        dataManager.getLine(line).getPath().getElements().add(newLine);
+        newLine.xProperty().bindBidirectional(dataManager.getStation(station).centerXProperty());
+        newLine.yProperty().bindBidirectional(dataManager.getStation(station).centerYProperty());
+        
+        dataManager.getLine(line).getPath().getElements().add(dataManager.getLine(line).getLineTo());
+    }
+            
     public void doAddLine(){
         // open up a dialog box to get name and color of line
         // make a new line with coordinates and size already
@@ -83,7 +96,7 @@ public class MapEditController {
         newLine.setEndLabel(this.getLineText());
         newLine.setStartLabel(this.getLineText());
         
-        dataManager.addShape(newLine);      
+        dataManager.addShape(newLine);
     }
       
     public void doGetLine(String name){

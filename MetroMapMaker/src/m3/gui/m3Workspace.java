@@ -1,5 +1,6 @@
 package m3.gui;
 
+import com.sun.glass.ui.Cursor;
 import djf.AppTemplate;
 import djf.components.AppDataComponent;
 import djf.components.AppWorkspaceComponent;
@@ -20,6 +21,8 @@ import static djf.ui.AppGUI.CLASS_BORDERED_PANE;
 import static djf.ui.AppGUI.CLASS_CANVAS;
 import djf.ui.AppMessageDialogSingleton;
 import djf.ui.AppYesNoCancelDialogSingleton;
+import static javafx.scene.Cursor.HAND;
+import static javafx.scene.Cursor.DEFAULT;
 import static m3.m3Property.*;
 import javafx.scene.control.Button;
 import javafx.scene.control.CheckBox;
@@ -28,6 +31,7 @@ import javafx.scene.control.ComboBox;
 import javafx.scene.control.Label;
 import javafx.scene.control.Slider;
 import javafx.scene.control.TextField;
+import javafx.scene.control.ToggleButton;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.Pane;
@@ -35,6 +39,7 @@ import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
 import javafx.scene.text.Text;
 import static m3.css.m3Style.*;
+import m3.data.DraggableStation;
 import m3.data.m3Data;
 
 /**
@@ -61,8 +66,8 @@ public class m3Workspace extends AppWorkspaceComponent{
     HBox midRow1Box;
     Button plusButton1;
     Button minusButton1;
-    Button addButton;
-    Button removeStationButton;
+    ToggleButton addButton;
+    ToggleButton removeStationButton;
     Button listButton;
             
     // BOTTOM
@@ -207,9 +212,11 @@ public class m3Workspace extends AppWorkspaceComponent{
         midRow1Box.setPrefHeight(30);
         plusButton1 = gui.initChildButton(midRow1Box, PLUS_ICON.toString(), false);
         minusButton1 = gui.initChildButton(midRow1Box, MINUS_ICON.toString(), false);;
-        addButton = gui.initChildButton2(midRow1Box, "Add Station", false);
-        removeStationButton = gui.initChildButton2(midRow1Box, "Remove Station", false);
+        addButton = new ToggleButton("Add Station to Line");
+        removeStationButton = new ToggleButton("Remove Station from Line");
         listButton = gui.initChildButton(midRow1Box, LIST_ICON.toString(), false);
+        midRow1Box.getChildren().add(addButton);
+        midRow1Box.getChildren().add(removeStationButton);
         
         plusButton1.setMinHeight(midRow1Box.getPrefHeight());
         minusButton1.setMinHeight(midRow1Box.getPrefHeight());
@@ -425,6 +432,13 @@ public class m3Workspace extends AppWorkspaceComponent{
             }
         });
         
+        addButton.setOnAction(e->{
+            if(addButton.isSelected())
+                gui.getPrimaryScene().setCursor(HAND);
+            else
+                gui.getPrimaryScene().setCursor(DEFAULT);
+        });
+        
         slider1.setOnMouseDragged(e->{
             String line = metroLines.getValue();
             mapEditController.doLineThickness(slider1.getValue(), line);
@@ -470,6 +484,34 @@ public class m3Workspace extends AppWorkspaceComponent{
         imageBgButton.setOnAction(e->{
             mapEditController.doImageBackground(); 
         });
+        
+        // MAKE THE CANVAS CONTROLLER	
+	canvasController = new CanvasController(app);
+        m3Data dataManager = (m3Data)app.getDataComponent();
+        canvas.setOnMouseClicked(e->{
+            if(addButton.isSelected() && e.getTarget() instanceof DraggableStation){
+                String station = dataManager.getStationByClick(e.getX(), e.getY()).getName();
+                String line = metroLines.getValue();
+                mapEditController.doAddStationToLine(station, line);
+            }
+            else{
+                addButton.setSelected(false);
+                gui.getPrimaryScene().setCursor(DEFAULT);
+            }
+
+        });
+//	canvas.setOnMousePressed(e->{
+//            if(e.getClickCount() == 2) 
+//                canvasController.processCanvasDoubleMousePress((int)e.getX(), (int)e.getY()); 
+//            else if(e.getClickCount() == 1)
+//                canvasController.processCanvasMousePress((int)e.getX(), (int)e.getY());
+//	});
+//	canvas.setOnMouseReleased(e->{
+//	    canvasController.processCanvasMouseRelease((int)e.getX(), (int)e.getY());
+//	});
+//	canvas.setOnMouseDragged(e->{
+//	    canvasController.processCanvasMouseDragged((int)e.getX(), (int)e.getY());
+//	});
     }
     
     public void initStyle() {

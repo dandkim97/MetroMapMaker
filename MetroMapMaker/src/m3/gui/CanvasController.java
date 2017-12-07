@@ -5,10 +5,16 @@
  */
 package m3.gui;
 
+import djf.AppTemplate;
+
 /**
  *
  * @author Dan Kim
  */
 public class CanvasController {
-    
+    AppTemplate app;
+
+    public CanvasController(AppTemplate initApp) {
+        app = initApp;
+    }
 }

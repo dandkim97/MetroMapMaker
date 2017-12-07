@@ -5,6 +5,9 @@ import javafx.scene.Group;
 import javafx.scene.Node;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Line;
+import javafx.scene.shape.LineTo;
+import javafx.scene.shape.MoveTo;
+import javafx.scene.shape.Path;
 import javafx.scene.text.Text;
 /**
  *
@@ -14,7 +17,9 @@ public class DraggableLine extends Group{
     
     DraggableStation start;
     DraggableStation end;
-    Line line;
+    LineTo line;
+    MoveTo begin;
+    Path path;
     
     DraggableText startText;
     DraggableText endText;
@@ -22,36 +27,36 @@ public class DraggableLine extends Group{
     Color lineColor;
     
     public DraggableLine(double startx, double starty, double endx, double endy) {
-        line = new Line(startx, starty, endx, endy);
+        path = new Path();
+        begin = new MoveTo(startx, starty);
+        line = new LineTo(endx, endy);
         start = new DraggableStation(startx, starty, 3);
         end = new DraggableStation(endx, endy, 3);
         startText = new DraggableText();
         endText = new DraggableText();
+        
+        path.getElements().add(begin);
+        path.getElements().add(line);
+        path.setStrokeWidth(5);
         init();
     }
     
     private void init() {
-        line.startXProperty().bindBidirectional(start.centerXProperty());
-        line.startYProperty().bindBidirectional(start.centerYProperty());
-        line.endXProperty().bindBidirectional(end.centerXProperty());
-        line.endYProperty().bindBidirectional(end.centerYProperty());
+        begin.xProperty().bindBidirectional(start.centerXProperty());
+        begin.yProperty().bindBidirectional(start.centerYProperty());
+        line.xProperty().bindBidirectional(end.centerXProperty());
+        line.yProperty().bindBidirectional(end.centerYProperty());
         startText.xProperty().bindBidirectional(start.centerXProperty());
         startText.yProperty().bindBidirectional(start.centerYProperty());
         endText.xProperty().bindBidirectional(end.centerXProperty());
         endText.yProperty().bindBidirectional(end.centerYProperty());
         ObservableList<Node> children = getChildren();
-        children.add(line);
+        children.add(path);
         children.add(startText);
         children.add(endText);
     }
-    
-    public void setStartLabel(String text) {
-        startText.setText(text);
-    }
-    
-    public void setEndLabel(String text) {
-        endText.setText(text);
-    }
+
+    // GETTERS
     
     public DraggableText getStartLabel(){
         return startText;
@@ -61,23 +66,45 @@ public class DraggableLine extends Group{
         return endText;
     }
     
-    public void setLineColor(Color color){
-        this.line.setStroke(color);
-        this.startText.setFill(color);
-        this.endText.setFill(color);
-        lineColor = color;
-    }
-    
     public Color getColor(){
         return lineColor;
     }
     
-    public Line getLine(){
+    public LineTo getLineTo(){
         return line;
+    }
+    
+    public Path getPath(){
+        return path;
     }
     
     public String getText(){
         return startText.getText();
     }
+    
+    public DraggableStation getStartStation(){
+        return start;
+    }
+    
+    public DraggableStation getEndStation(){
+        return end;
+    }
+    
+    //SETTERS
+    public void setStartLabel(String text) {
+        startText.setText(text);
+    }
+    
+    public void setEndLabel(String text) {
+        endText.setText(text);
+    }
+    
+    public void setLineColor(Color color){
+        path.setStroke(color);
+        this.startText.setFill(color);
+        this.endText.setFill(color);
+        lineColor = color;
+    }
+    
     
 }

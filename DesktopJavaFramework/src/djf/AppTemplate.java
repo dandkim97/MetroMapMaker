@@ -48,14 +48,14 @@ public abstract class AppTemplate extends Application {
             boolean success = false;
             success = loadProperties(APP_PROPERTIES_FILE_NAME);
             if(success){
-                WelcomeDialogSingleton dialog = WelcomeDialogSingleton.getSingleton();
+//                WelcomeDialogSingleton dialog = WelcomeDialogSingleton.getSingleton();
                 
                 String appTitle = props.getProperty(APP_TITLE);
                 
                 gui = new AppGUI(primaryStage, appTitle, this);
                 
-                dialog.show("Welcome to the Metro Map Maker", "");
-                if(dialog.getTruth()){
+                welcomeDialog.show("Welcome to the Metro Map Maker", "");
+                if(welcomeDialog.getTruth()){
                     buildAppComponentsHook();
                 }
                 else{
