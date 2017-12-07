@@ -59,10 +59,6 @@ public class DraggableLine extends Group{
         children.add(startText);
         children.add(endText);
     }
-
-    public void addStationLine(String name){
-        lineList.add(name);
-    }
     
     // GETTERS
     public ArrayList<String> getLineList(){

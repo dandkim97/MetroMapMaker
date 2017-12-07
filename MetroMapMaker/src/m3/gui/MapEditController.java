@@ -89,7 +89,29 @@ public class MapEditController {
     }
     
     public void doRemoveStationToLine(String station, String line){
-        
+        if(dataManager.getLine(line).getPath().getElements().size() > 3){
+            // CUT NEXT LINE OF STATION
+            int cutIndex = helpRemove(station, line);
+            dataManager.getLine(line).getPath().getElements().remove(cutIndex);
+            
+            // REMOVE FROM LIST OF STATIONS IN LINE
+            dataManager.getLine(line).getLineList().remove(station);
+        }
+        else if(dataManager.getLine(line).getPath().getElements().size() == 3){
+            dataManager.getLine(line).getPath().getElements().remove(1);
+            dataManager.getLine(line).getPath().getElements().add(dataManager.getLine(line).getLineTo());
+            
+            dataManager.getLine(line).getLineList().remove(station);
+        }
+    }
+    
+    // HELPER TO FIND STATION LINETO # WHICH STARTS AT "TO BE" REMOVED STATION
+    private int helpRemove(String station, String line){
+        for(int i = 0; i < dataManager.getLine(line).getLineList().size()-1; i++){
+            if(dataManager.getLine(line).getLineList().get(i).equals(station))
+                return i+1;
+        }
+        return 0;
     }
             
     public void doAddLine(){

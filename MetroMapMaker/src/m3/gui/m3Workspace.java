@@ -438,8 +438,19 @@ public class m3Workspace extends AppWorkspaceComponent{
         });
         
         addButton.setOnAction(e->{
-            if(addButton.isSelected())
+            if(addButton.isSelected()){
                 gui.getPrimaryScene().setCursor(HAND);
+                removeStationButton.setSelected(false);
+            }
+            else
+                gui.getPrimaryScene().setCursor(DEFAULT);
+        });
+        
+        removeStationButton.setOnAction(e->{
+            if(removeStationButton.isSelected()){
+                gui.getPrimaryScene().setCursor(HAND);
+                addButton.setSelected(false);
+            }
             else
                 gui.getPrimaryScene().setCursor(DEFAULT);
         });
@@ -499,8 +510,14 @@ public class m3Workspace extends AppWorkspaceComponent{
                 String line = metroLines.getValue();
                 mapEditController.doAddStationToLine(station, line);
             }
+            else if(removeStationButton.isSelected() && e.getTarget() instanceof DraggableStation){
+                String station = dataManager.getStationByClick(e.getX(), e.getY()).getName();
+                String line = metroLines.getValue();
+                mapEditController.doRemoveStationToLine(station, line);
+            }
             else{
                 addButton.setSelected(false);
+                removeStationButton.setSelected(false);
                 gui.getPrimaryScene().setCursor(DEFAULT);
             }
 
