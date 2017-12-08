@@ -188,10 +188,13 @@ public class m3Data implements AppDataComponent{
 
     public Shape getTopShape(int x, int y) {
 	for (int i = shapes.size() - 1; i >= 0; i--) {
-	    Shape shape = (Shape)shapes.get(i);
-	    if (shape.contains(x, y)) {
-		return shape;
-	    }
+            if(shapes.get(i) instanceof DraggableLine){}
+            else{
+                Shape shape = (Shape)shapes.get(i);
+                if (shape.contains(x, y)) {
+                    return shape;
+                }
+            }
 	}
 	return null;
     }

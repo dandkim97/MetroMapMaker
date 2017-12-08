@@ -10,6 +10,7 @@ import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextInputDialog;
 import javafx.scene.image.Image;
+import javafx.scene.input.KeyCode;
 import javafx.scene.layout.Pane;
 import javafx.scene.paint.Color;
 import javafx.scene.paint.ImagePattern;
@@ -369,5 +370,65 @@ public class MapEditController {
             DraggableLabel text = (DraggableLabel)dataManager.getSelectedShape();
             text.setFill(color);
         }
+    }
+    
+    public void doZoomIn(){
+        m3Workspace workspace = (m3Workspace)app.getWorkspaceComponent();
+        if(workspace.getCanvas().getScaleX() >= 2.99){}
+        else{
+            workspace.getCanvas().setScaleX(workspace.getCanvas().getScaleX()*1.1);
+            workspace.getCanvas().setScaleY(workspace.getCanvas().getScaleY()*1.001);
+        }
+        if(workspace.getCanvas().getScaleX() > 1){
+        
+            appGUI.getAppPane().setOnKeyPressed(ke->{
+                if(ke.getCode() == KeyCode.A){
+                    workspace.getCanvas().setTranslateX
+                        (workspace.getCanvas().getTranslateX() - 0.1 * workspace.getCanvas().getWidth());
+                }
+                else if(ke.getCode() == KeyCode.D){
+                    workspace.getCanvas().setTranslateX
+                        (workspace.getCanvas().getTranslateX() + 0.1 *workspace.getCanvas().getWidth());
+                }
+                else if(ke.getCode() == KeyCode.W){
+                    workspace.getCanvas().setTranslateY
+                        (workspace.getCanvas().getTranslateY() - 0.1 *workspace.getCanvas().getHeight());
+                }
+                else if(ke.getCode() == KeyCode.S){
+                    workspace.getCanvas().setTranslateY
+                        (workspace.getCanvas().getTranslateY() + 0.1 *workspace.getCanvas().getHeight());
+                }
+                else{}
+            });
+              
+        }
+    }
+    
+    public void doZoomOut(){
+        m3Workspace workspace = (m3Workspace)app.getWorkspaceComponent();
+        if(workspace.getCanvas().getScaleX() < 0.2){}
+        else{
+            workspace.getCanvas().setScaleX(workspace.getCanvas().getScaleX()/1.1);
+            workspace.getCanvas().setScaleY(workspace.getCanvas().getScaleY()/1.001);
+        }
+        if(workspace.getCanvas().getScaleX() <= 1){
+            appGUI.getAppPane().setOnKeyPressed(ke->{});
+        }
+    }
+    
+    public void doInc(){
+        m3Workspace workspace = (m3Workspace)app.getWorkspaceComponent();
+        
+        workspace.getCanvas().resize(workspace.getCanvas().getWidth()+(.1*workspace.getCanvas().getWidth()), 
+                workspace.getCanvas().getHeight()+(.1*workspace.getCanvas().getHeight()));       
+        workspace.getCanvas().setMaxSize(workspace.getCanvas().getWidth(), workspace.getCanvas().getHeight() );
+    }
+    
+    public void doDec(){
+        m3Workspace workspace = (m3Workspace)app.getWorkspaceComponent();
+
+        workspace.getCanvas().resize(workspace.getCanvas().getWidth()-(.1*workspace.getCanvas().getWidth()), 
+                workspace.getCanvas().getHeight()-(.1*workspace.getCanvas().getHeight()));     
+        workspace.getCanvas().setMaxSize(workspace.getCanvas().getWidth(), workspace.getCanvas().getHeight() );
     }
 }

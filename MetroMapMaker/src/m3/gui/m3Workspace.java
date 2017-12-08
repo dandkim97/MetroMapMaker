@@ -21,6 +21,7 @@ import static djf.ui.AppGUI.CLASS_BORDERED_PANE;
 import static djf.ui.AppGUI.CLASS_CANVAS;
 import djf.ui.AppMessageDialogSingleton;
 import djf.ui.AppYesNoCancelDialogSingleton;
+import java.awt.event.KeyEvent;
 import static javafx.scene.Cursor.HAND;
 import static javafx.scene.Cursor.DEFAULT;
 import static m3.m3Property.*;
@@ -30,11 +31,14 @@ import javafx.scene.control.ColorPicker;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.Label;
 import javafx.scene.control.Slider;
+import javafx.scene.control.SplitPane;
 import javafx.scene.control.TextField;
 import javafx.scene.control.ToggleButton;
+import javafx.scene.input.KeyCode;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.Pane;
+import javafx.scene.layout.StackPane;
 import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Shape;
@@ -169,6 +173,7 @@ public class m3Workspace extends AppWorkspaceComponent{
     Text debugText;
     
     String label;
+    SplitPane newPane;
     
     // ACCESSOR METHODS EVENT HANDLERS MAY NEED
     
@@ -384,8 +389,14 @@ public class m3Workspace extends AppWorkspaceComponent{
         
 	// AND NOW SETUP THE WORKSPACE
 	workspace = new BorderPane();
-	((BorderPane)workspace).setLeft(editToolbar);
+        
+//        newPane = new SplitPane();
+//        newPane.getItems().add(editToolbar);
+//        newPane.getItems().add(canvas);
+//        newPane.setDividerPosition(0, 0.1);
+                
         ((BorderPane)workspace).setCenter(canvas);
+	((BorderPane)workspace).setLeft(editToolbar);
     }
     
     public void initController(){
@@ -528,7 +539,21 @@ public class m3Workspace extends AppWorkspaceComponent{
             mapEditController.doRemoveElement();
         });
         
+        zoomInButton.setOnAction(e->{
+            mapEditController.doZoomIn();
+        });
         
+        zoomOutButton.setOnAction(e->{
+            mapEditController.doZoomOut();
+        });
+        
+        incButton.setOnAction(e->{
+            mapEditController.doInc();
+        });
+        
+        decButton.setOnAction(e->{
+            mapEditController.doDec();
+        });
         
         // MAKE THE CANVAS CONTROLLER	
 	canvasController = new CanvasController(app);
