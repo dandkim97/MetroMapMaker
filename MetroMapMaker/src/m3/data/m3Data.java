@@ -178,7 +178,7 @@ public class m3Data implements AppDataComponent{
 	    unhighlightShape(selectedShape);
 	}
 	if (shape != null) {
-//	    highlightShape(shape);
+	    highlightShape(shape);
 	    m3Workspace workspace = (m3Workspace)app.getWorkspaceComponent();
 	    workspace.loadSelectedShapeSettings(shape);
 	}
@@ -188,9 +188,21 @@ public class m3Data implements AppDataComponent{
 
     public Shape getTopShape(int x, int y) {
 	for (int i = shapes.size() - 1; i >= 0; i--) {
-            if(shapes.get(i) instanceof DraggableLine){}
+            Shape shape;
+            if(shapes.get(i) instanceof DraggableLine){
+                DraggableLine t = (DraggableLine)shapes.get(i);
+                shape = (Shape)(t.getStartLabel());
+                if (shape.contains(x, y)) {
+                    return shape;
+                }
+                else{
+                    shape = (Shape)(t.getEndLabel());
+                    if(shape.contains(x,y))
+                        return shape;
+                }
+            }
             else{
-                Shape shape = (Shape)shapes.get(i);
+                shape = (Shape)shapes.get(i);
                 if (shape.contains(x, y)) {
                     return shape;
                 }

@@ -413,6 +413,14 @@ public class m3Workspace extends AppWorkspaceComponent{
 	((BorderPane)workspace).setLeft(editToolbar);
     }
     
+    public ComboBox<String> getMetroLines(){
+        return metroLines;
+    }
+    
+    public ComboBox<String> getMetroStations(){
+        return metroStations;
+    }
+    
     public void initController(){
         // MAKE THE EDIT CONTROLLER
         mapEditController = new MapEditController(app, gui);
@@ -420,8 +428,8 @@ public class m3Workspace extends AppWorkspaceComponent{
         // CONNECT THE BUTTONS TO RESPECTIVE HANDLERS
         plusButton1.setOnAction(e->{
             mapEditController.doAddLine();
-            metroLines.getItems().add(mapEditController.getLineText());
-            metroLines.setValue(mapEditController.getLineText());
+//            metroLines.getItems().add(mapEditController.getLineText());
+//            metroLines.setValue(mapEditController.getLineText());
             String color = mapEditController.getLineColor().toString();
                 color = "#" + color.substring(2, 8);
                 colorButton1.setText(color);
@@ -497,8 +505,8 @@ public class m3Workspace extends AppWorkspaceComponent{
         
         plusButton2.setOnAction(e->{
             mapEditController.doAddStation();
-            metroStations.getItems().add(mapEditController.getLineText());
-            metroStations.setValue(mapEditController.getLineText());
+//            metroStations.getItems().add(mapEditController.getLineText());
+//            metroStations.setValue(mapEditController.getLineText());
         });
         
         minusButton2.setOnAction(e->{

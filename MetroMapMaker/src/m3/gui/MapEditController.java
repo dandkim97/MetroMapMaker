@@ -7,6 +7,7 @@ import java.util.Optional;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Alert.AlertType;
 import javafx.scene.control.Button;
+import javafx.scene.control.ComboBox;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextInputDialog;
 import javafx.scene.image.Image;
@@ -26,12 +27,14 @@ import javafx.scene.text.FontWeight;
 import javafx.scene.text.Text;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
+import jtps.JTPS;
 import m3.data.DraggableLabel;
 import m3.data.DraggableLine;
 import m3.data.DraggableRectangle;
 import m3.data.DraggableStation;
 import m3.data.DraggableText;
 import m3.data.m3Data;
+import m3.transaction.*;
 
 /**
  *
@@ -76,6 +79,12 @@ public class MapEditController {
         dataManager.getStation(station).setRadius(value);
     }
     
+    public void doAddStationToLineTransaction(String l, LineTo nl, String s, LineTo lt, int i){
+        doAddStationToLine_Transaction trans = new doAddStationToLine_Transaction(dataManager, l, nl, s, lt, i);
+        JTPS jtps = app.getJTPS();
+        jtps.addTransaction(trans);
+    }
+    
     public void doAddStationToLine(String station, String line){
         // CUT INITIAL LINE
         dataManager.getLine(line).getPath().getElements().remove(dataManager.getLine(line).getLineTo());
@@ -86,13 +95,25 @@ public class MapEditController {
         dataManager.getLine(line).getPath().getElements().add(newLine);
         newLine.xProperty().bindBidirectional(dataManager.getStation(station).centerXProperty());
         newLine.yProperty().bindBidirectional(dataManager.getStation(station).centerYProperty());
-          
+        
+//        int index = 1; 
+//        for(int i = 1; i < dataManager.getLine(line).getPath().getElements().size();i++){
+//            if(dataManager.getLine(line).getPath().getElements().get(i) instanceof LineTo){
+//                LineTo newerLine = (LineTo)dataManager.getLine(line).getPath().getElements().get(i);
+//                if(newerLine.getX() == dataManager.getStation(station).getCenterX() &&
+//                        newerLine.getY() == dataManager.getStation(station).getCenterY()){
+//                    index = i;
+//                }
+//            }
+//        }
         // PASTE CUT LINE
         dataManager.getLine(line).getPath().getElements().add(dataManager.getLine(line).getLineTo());
         
         // ADD TO LIST OF STATIONS IN LINE
         dataManager.getLine(line).getLineList().add(station);
-      
+        
+//        doAddStationToLineTransaction(line, newLine, station, dataManager.getLine(line).getLineTo(), index);
+        
     }
     
     public void doRemoveStationToLine(String station, String line){
@@ -107,10 +128,17 @@ public class MapEditController {
             }
         }
     }
+    
+    public void doAddLineTransaction(DraggableLine l, ComboBox<String> cs, String n){
+        doAddLine_Transaction trans = new doAddLine_Transaction(dataManager, l, cs, n);
+        JTPS jtps = app.getJTPS();
+        jtps.addTransaction(trans);
+    }
             
     public void doAddLine(){
         // open up a dialog box to get name and color of line
         // make a new line with coordinates and size already
+        m3Workspace workspace = (m3Workspace)app.getWorkspaceComponent();
         newLineDialog dialog = new newLineDialog();
         dialog.init(appGUI.getWindow());
         dialog.setTitle("Creating a New Line");
@@ -124,7 +152,8 @@ public class MapEditController {
         newLine.setEndLabel(this.getLineText());
         newLine.setStartLabel(this.getLineText());
         
-        dataManager.addShape(newLine);
+        doAddLineTransaction(newLine, workspace.getMetroLines(), this.getLineText());
+//        dataManager.addShape(newLine);
     }
       
     public void doGetLine(String name){
@@ -133,8 +162,8 @@ public class MapEditController {
         for(int i = 0; i < dataManager.getLines().size(); i++){
             // HIGHLIGHT THE SELECTED LINE ENABLE EDITING
             if(dataManager.getLines().get(i).getText().equals(name)){
-                dataManager.highlightShape(line.getStartLabel());
-                dataManager.highlightShape(line.getEndLabel());
+//                dataManager.highlightShape(line.getStartLabel());
+//                dataManager.highlightShape(line.getEndLabel());
                 line.getStartLabel().draggable();
                 line.getEndLabel().draggable();
                 dataManager.setSelectedLine(line);
@@ -143,16 +172,25 @@ public class MapEditController {
             
             // UNHIGHLIGHT THE REST DISABLE EDITING
             else{
-                dataManager.unhighlightShape(dataManager.getLines().get(i).getStartLabel());
-                dataManager.unhighlightShape(dataManager.getLines().get(i).getEndLabel());
+//                dataManager.unhighlightShape(dataManager.getLines().get(i).getStartLabel());
+//                dataManager.unhighlightShape(dataManager.getLines().get(i).getEndLabel());
                 dataManager.getLines().get(i).getStartLabel().disableDrag();
                 dataManager.getLines().get(i).getEndLabel().disableDrag();
             }
         }
     }
     
+    public void doRemoveLineTransaction(DraggableLine l, ComboBox<String> cs, String n){
+        doRemoveLine_Transaction trans = new doRemoveLine_Transaction(dataManager, l, cs, n);
+        JTPS jtps = app.getJTPS();
+        jtps.addTransaction(trans);
+    }
+    
     public void doRemoveLine(String name){
-        dataManager.removeShape(dataManager.getLine(name));
+        m3Workspace workspace = (m3Workspace)app.getWorkspaceComponent();
+        
+        doRemoveLineTransaction(dataManager.getLine(name), workspace.getMetroLines(), name);
+//        dataManager.removeShape(dataManager.getLine(name));
     }
     
     public void doLineList(String name){
@@ -167,7 +205,14 @@ public class MapEditController {
         alert.showAndWait();
     }
     
+    public void doEditLine_Transaction(DraggableLine l, ComboBox<String> cs, String n, String os, Color o, Color nw){
+        doEditLine_Transaction trans = new doEditLine_Transaction(dataManager, l, cs, n, os, o, nw);
+        JTPS jtps = app.getJTPS();
+        jtps.addTransaction(trans);
+    }
+    
     public void doLineEdit(){
+        m3Workspace workspace = (m3Workspace)app.getWorkspaceComponent();
         newLineDialog dialog = new newLineDialog();
         dialog.setInitText(dataManager.getSelectedLine().getText());
         dialog.init(appGUI.getWindow());
@@ -183,10 +228,20 @@ public class MapEditController {
         dataManager.getSelectedLine().setEndLabel(this.getLineText());
         dataManager.getSelectedLine().setStartLabel(this.getLineText());
         
+//        doEditLine_Transaction(dataManager.getSelectedLine(), workspace.getMetroLines(), this.getLineText(),
+//                dataManager.getSelectedLine().getText(), dataManager.getSelectedLine().getColor(), this.getLineColor());
+        
         
     }
     
+    public void doAddStation_Transaction(DraggableStation s, DraggableText t, ComboBox<String> cs, String n){
+        doAddStation_Transaction trans = new doAddStation_Transaction(dataManager, s, t, cs, n);
+        JTPS jtps = app.getJTPS();
+        jtps.addTransaction(trans);
+    }
+    
     public void doAddStation(){
+        m3Workspace workspace = (m3Workspace)app.getWorkspaceComponent();
         TextInputDialog dialog = new TextInputDialog();
         dialog.setTitle("Making a New Station");
         dialog.setContentText("Enter your station name:");
@@ -202,7 +257,8 @@ public class MapEditController {
             dtext.xProperty().bindBidirectional(station.getTopRightX());
             dtext.yProperty().bindBidirectional(station.getTopRightY());
             station.setName(result.get());
-            dataManager.addStation(station, dtext);
+            doAddStation_Transaction(station, dtext, workspace.getMetroStations(), result.get() );
+//            dataManager.addStation(station, dtext);
         }
         
     }
@@ -227,9 +283,17 @@ public class MapEditController {
         }
     }
 
+    public void doRemoveStation_Transaction(DraggableStation s, DraggableText t, ComboBox<String> cs, String n){
+        doRemoveStation_Transaction trans = new doRemoveStation_Transaction(dataManager, s, t, cs, n);
+        JTPS jtps = app.getJTPS();
+        jtps.addTransaction(trans);
+    }
+    
     public void doRemoveStation(String name) {
-        dataManager.removeStation(dataManager.getStation(name));
-        dataManager.removeText(dataManager.getSText(name));
+        m3Workspace workspace = (m3Workspace)app.getWorkspaceComponent();
+        doRemoveStation_Transaction(dataManager.getStation(name), dataManager.getSText(name), workspace.getMetroStations(), name);
+//        dataManager.removeStation(dataManager.getStation(name));
+//        dataManager.removeText(dataManager.getSText(name));
     }
     
     public void doMoveStationLabel(String name){

@@ -454,12 +454,12 @@ public class AppGUI {
         
         fileController = new AppFileController(app);
         
-//        undoButton.setOnAction(e -> {
-//            fileController.handleUndoRequest();
-//        });
-//        redoButton.setOnAction(e -> {
-//            fileController.handleRedoRequest();
-//        });
+        undoButton.setOnAction(e -> {
+            fileController.handleUndoRequest();
+        });
+        redoButton.setOnAction(e -> {
+            fileController.handleRedoRequest();
+        });
         topToolbarPane = getTopToolbarPane();
         topToolbarPane.setCenter(fileToolbar2);
     }

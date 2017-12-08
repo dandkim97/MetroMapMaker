@@ -12,6 +12,7 @@ import javafx.scene.control.Alert;
 import javafx.scene.control.Alert.AlertType;
 import javafx.scene.control.ButtonType;
 import javafx.stage.Stage;
+import jtps.JTPS;
 
 /**
  *
@@ -23,6 +24,7 @@ public abstract class AppTemplate extends Application {
     protected AppDataComponent dataComponent;
     protected AppFileComponent fileComponent;
     protected AppWorkspaceComponent workspaceComponent;
+    protected JTPS jtps;
     
     public abstract void buildAppComponentsHook();
     public abstract void buildAppComponentsHook2();
@@ -31,6 +33,7 @@ public abstract class AppTemplate extends Application {
     public AppFileComponent getFileComponent() { return fileComponent; }
     public AppWorkspaceComponent getWorkspaceComponent() { return workspaceComponent; }
     public AppGUI getGUI() { return gui; }
+    public JTPS getJTPS(){return jtps; }
     
     
     @Override
@@ -49,6 +52,7 @@ public abstract class AppTemplate extends Application {
             success = loadProperties(APP_PROPERTIES_FILE_NAME);
             if(success){
 //                WelcomeDialogSingleton dialog = WelcomeDialogSingleton.getSingleton();
+                jtps = new JTPS();
                 
                 String appTitle = props.getProperty(APP_TITLE);
                 

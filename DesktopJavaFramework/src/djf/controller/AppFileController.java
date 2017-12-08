@@ -12,6 +12,7 @@ import djf.ui.AppGUI;
 import djf.ui.AppMessageDialogSingleton;
 import djf.ui.AppYesNoCancelDialogSingleton;
 import javafx.scene.control.TextInputDialog;
+import jtps.JTPS;
 import properties_manager.PropertiesManager;
 
 /**
@@ -316,5 +317,17 @@ public class AppFileController {
                 dialog.setContentText("Please enter the name:");
                 dialog.showAndWait();
         
+    }
+    
+    public void handleUndoRequest(){
+        JTPS jtps = app.getJTPS();
+        jtps.undoTransaction();
+        app.getGUI().updateToolbarControls(false);
+    }
+    
+    public void handleRedoRequest(){
+        JTPS jtps = app.getJTPS();
+        jtps.doTransaction();
+        app.getGUI().updateToolbarControls(false);
     }
 }
