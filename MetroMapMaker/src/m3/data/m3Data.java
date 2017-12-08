@@ -282,7 +282,18 @@ public class m3Data implements AppDataComponent{
         textList.remove(textToRemove);
     }
     
+    @Override
     public void resetData() {
+//	setState(SELECTING_SHAPE);
+	newShape = null;
+	selectedShape = null;
+
+//	// INIT THE COLORS
+//	currentFillColor = Color.web(WHITE_HEX);
+//	currentOutlineColor = Color.web(BLACK_HEX);
+	
+	shapes.clear();
+	((m3Workspace)app.getWorkspaceComponent()).getCanvas().getChildren().clear();
     }
 
     public void setBackgroundColor(Color initBackgroundColor) {

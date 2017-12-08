@@ -21,6 +21,7 @@ import javafx.scene.shape.MoveTo;
 import javafx.scene.shape.Path;
 import javafx.scene.shape.Shape;
 import javafx.scene.text.Font;
+import javafx.scene.text.FontPosture;
 import javafx.scene.text.FontWeight;
 import javafx.scene.text.Text;
 import javafx.stage.Modality;
@@ -348,6 +349,7 @@ public class MapEditController {
             DraggableLabel label = new DraggableLabel(result.get());
             label.setX(100);
             label.setY(100);
+            System.out.println(label.getFont().toString());
             dataManager.addShape(label);
         }
     }
@@ -359,6 +361,186 @@ public class MapEditController {
             dataManager.removeShape(newShape);
         else if (newShape instanceof DraggableLabel)
             dataManager.removeShape(newShape);    
+    }
+    
+    public void doBold(){
+        if (dataManager.getSelectedShape() instanceof DraggableText){          
+            DraggableText t = (DraggableText)(dataManager.getSelectedShape());
+            if(t.getBold() == false && t.getItalics() == false){
+                t.setFont(Font.font(t.getFStyle(), 
+                    FontWeight.BOLD, t.getFSize()));
+                t.toBold();
+            }
+            else if(t.getBold() == true && t.getItalics() == false){
+                t.setFont(Font.font(t.getFStyle(), 
+                    FontWeight.NORMAL, t.getFSize()));
+                t.toBold();
+            }
+            else if(t.getBold() == true && t.getItalics() == true){
+                t.setFont(Font.font(t.getFStyle(), 
+                    FontWeight.NORMAL, FontPosture.ITALIC, t.getFSize()));
+                t.toBold();
+            }
+            else{
+                t.setFont(Font.font(t.getFStyle(), 
+                    FontWeight.BOLD, FontPosture.ITALIC, t.getFSize()));
+                t.toBold();
+            }
+        }
+        else if (dataManager.getSelectedShape() instanceof DraggableLabel){          
+            DraggableLabel t = (DraggableLabel)(dataManager.getSelectedShape());
+            if(t.getBold() == false && t.getItalics() == false){
+                t.setFont(Font.font(t.getFStyle(), 
+                    FontWeight.BOLD, t.getFSize()));
+                t.toBold();
+            }
+            else if(t.getBold() == true && t.getItalics() == false){
+                t.setFont(Font.font(t.getFStyle(), 
+                    FontWeight.NORMAL, t.getFSize()));
+                t.toBold();
+            }
+            else if(t.getBold() == true && t.getItalics() == true){
+                t.setFont(Font.font(t.getFStyle(), 
+                    FontWeight.NORMAL, FontPosture.ITALIC, t.getFSize()));
+                t.toBold();
+            }
+            else{
+                t.setFont(Font.font(t.getFStyle(), 
+                    FontWeight.BOLD, FontPosture.ITALIC, t.getFSize()));
+                t.toBold();
+            }
+        }
+    }
+    
+    public void doItalic(){
+        if (dataManager.getSelectedShape() instanceof DraggableText){          
+            DraggableText t = (DraggableText)(dataManager.getSelectedShape());
+            if(t.getItalics() == false && t.getBold() == false){
+                t.setFont(Font.font(t.getFStyle(), 
+                    FontPosture.ITALIC, t.getFSize()));
+                t.toItalics();
+            }
+            else if(t.getItalics() == true && t.getBold() == false){
+                t.setFont(Font.font(t.getFStyle(), 
+                    FontWeight.NORMAL, t.getFSize()));
+                t.toItalics();
+            }
+            else if(t.getItalics() == false && t.getBold() == true){
+                t.setFont(Font.font(t.getFStyle(), 
+                    FontWeight.BOLD, FontPosture.ITALIC, t.getFSize()));
+                t.toItalics();
+            }
+            else{
+                t.setFont(Font.font(t.getFStyle(), 
+                    FontWeight.BOLD, t.getFSize()));
+                t.toItalics();
+            }
+        }
+        else if (dataManager.getSelectedShape() instanceof DraggableLabel){
+            DraggableLabel t = (DraggableLabel)(dataManager.getSelectedShape());
+            if(t.getItalics() == false && t.getBold() == false){
+                t.setFont(Font.font(t.getFStyle(), 
+                    FontPosture.ITALIC, t.getFSize()));
+                t.toItalics();
+            }
+            else if(t.getItalics() == true && t.getBold() == false){
+                t.setFont(Font.font(t.getFStyle(), 
+                    FontWeight.NORMAL, t.getFSize()));
+                t.toItalics();
+            }
+            else if(t.getItalics() == false && t.getBold() == true){
+                t.setFont(Font.font(t.getFStyle(), 
+                    FontWeight.BOLD, FontPosture.ITALIC, t.getFSize()));
+                t.toItalics();
+            }
+            else{
+                t.setFont(Font.font(t.getFStyle(), 
+                    FontWeight.BOLD, t.getFSize()));
+                t.toItalics();
+            }
+        }
+    }
+    
+    public void doStyle(String s){
+        if (dataManager.getSelectedShape() instanceof DraggableText){
+            DraggableText t = (DraggableText)(dataManager.getSelectedShape());
+            t.setFStyle(s);
+            if(t.getItalics() == false && t.getBold() == false){
+                t.setFont(Font.font(t.getFStyle(), t.getFSize()));
+            }
+            else if(t.getItalics() == true && t.getBold() == false){
+                t.setFont(Font.font(t.getFStyle(), 
+                    FontPosture.ITALIC, t.getFSize()));
+            }
+            else if(t.getItalics() == false && t.getBold() == true){
+                t.setFont(Font.font(t.getFStyle(), 
+                    FontWeight.BOLD, t.getFSize()));
+            }
+            else{
+                t.setFont(Font.font(t.getFStyle(), FontWeight.BOLD,
+                    FontPosture.ITALIC, t.getFSize()));
+            }
+        }
+        else if (dataManager.getSelectedShape() instanceof DraggableLabel){
+            DraggableLabel t = (DraggableLabel)(dataManager.getSelectedShape());
+            t.setFStyle(s);
+            if(t.getItalics() == false && t.getBold() == false){
+                t.setFont(Font.font(t.getFStyle(), t.getFSize()));
+            }
+            else if(t.getItalics() == true && t.getBold() == false){
+                t.setFont(Font.font(t.getFStyle(), 
+                    FontPosture.ITALIC, t.getFSize()));
+            }
+            else if(t.getItalics() == false && t.getBold() == true){
+                t.setFont(Font.font(t.getFStyle(), 
+                    FontWeight.BOLD, t.getFSize()));
+            }
+            else{
+                t.setFont(Font.font(t.getFStyle(), FontWeight.BOLD,
+                    FontPosture.ITALIC, t.getFSize()));
+            }
+        }
+    }
+    
+    public void doSize(double n){
+        if (dataManager.getSelectedShape() instanceof DraggableText){
+            DraggableText t = (DraggableText)(dataManager.getSelectedShape());
+            t.setFSize(n);
+            if(t.getItalics() == false && t.getBold() == false){
+                t.setFont(Font.font(t.getFStyle(), t.getFSize()));
+            }
+            else if(t.getItalics() == true && t.getBold() == false){
+                t.setFont(Font.font(t.getFStyle(), 
+                    FontPosture.ITALIC, t.getFSize()));
+            }
+            else if(t.getItalics() == false && t.getBold() == true){
+                t.setFont(Font.font(t.getFStyle(), 
+                    FontWeight.BOLD, t.getFSize()));
+            }
+            else{
+                t.setFont(Font.font(t.getFStyle(), FontWeight.BOLD, 
+                    FontPosture.ITALIC, t.getFSize()));
+            }
+        }
+        else if (dataManager.getSelectedShape() instanceof DraggableLabel){
+            DraggableLabel t = (DraggableLabel)(dataManager.getSelectedShape());
+            t.setFSize(n);
+            if(t.getItalics() == false && t.getBold() == false){
+                t.setFont(Font.font(t.getFStyle(), t.getFSize()));
+            }
+            else if(t.getItalics() == true && t.getBold() == false){
+                t.setFont(Font.font(t.getFStyle(), 
+                    FontPosture.ITALIC, t.getFSize()));
+            }
+            else if(t.getItalics() == false && t.getBold() == true){
+                t.setFont(Font.font(t.getFStyle(), 
+                    FontWeight.BOLD, t.getFSize()));
+            }
+            else{
+                t.setFont(Font.font(t.getFStyle(), FontWeight.BOLD, 
+                    FontPosture.ITALIC, t.getFSize()));
+            }
+        }     
     }
     
     public void doColorText(Color color){

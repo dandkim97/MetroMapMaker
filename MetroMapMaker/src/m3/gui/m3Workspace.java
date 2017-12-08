@@ -140,7 +140,7 @@ public class m3Workspace extends AppWorkspaceComponent{
     HBox botRow5Box;
     Button boldButton;
     Button italicButton;
-    ComboBox<Integer> fontSize;
+    ComboBox<Double> fontSize;
     ComboBox<String> fontStyle;
     
     // SIXTH ROW
@@ -331,10 +331,24 @@ public class m3Workspace extends AppWorkspaceComponent{
         botRow5Box = new HBox(5);
         boldButton = gui.initChildButton(botRow5Box, BOLD_ICON.toString(), false);
         italicButton = gui.initChildButton(botRow5Box, ITALIC_ICON.toString(), false);
-        fontSize = new ComboBox<Integer>();
-        fontSize.setValue(12);
+        fontSize = new ComboBox<Double>();
+        fontSize.getItems().addAll(
+            8.0,  9.0,  10.0,  11.0,  12.0,
+            14.0,  16.0,  18.0,  20.0,  22.0,
+            24.0, 26.0, 28.0, 30.0, 32.0,
+            34.0, 36.0, 38.0, 48.0, 64.0
+        );
+        fontSize.setValue(12.0);
         fontStyle = new ComboBox<String>();
-        fontStyle.setValue("Times New Roman");
+        fontStyle.getItems().addAll(
+            "Arial",
+            "Calibri",
+            "Century Gothic",
+            "Regular",
+            "Comic Sans MS",
+            "Times New Roman"            
+        );
+        fontStyle.setValue("Regular");
         boldButton.setMinHeight(30);
         italicButton.setMinHeight(30);
         fontSize.setMinHeight(30);
@@ -537,6 +551,22 @@ public class m3Workspace extends AppWorkspaceComponent{
         
         removeButton.setOnAction(e->{
             mapEditController.doRemoveElement();
+        });
+        
+        boldButton.setOnAction(e->{
+            mapEditController.doBold();
+        });
+        
+        italicButton.setOnAction(e->{
+            mapEditController.doItalic();
+        });
+        
+        fontSize.setOnAction(e->{
+            mapEditController.doSize(fontSize.getValue());
+        });
+        
+        fontStyle.setOnAction(e->{
+            mapEditController.doStyle(fontStyle.getValue());
         });
         
         zoomInButton.setOnAction(e->{
