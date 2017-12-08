@@ -4,6 +4,7 @@ import static java.awt.Color.black;
 import java.util.Optional;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
+import javafx.scene.control.CheckBox;
 import javafx.scene.control.ColorPicker;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextArea;
@@ -26,10 +27,12 @@ public class newLineDialog extends Stage{
     ColorPicker lineColor;
     Button yes;
     Button cancel;
+    CheckBox check;
     String printText;
     String initText = "";
     Color color = Color.BLACK;
     Boolean colorSelected = false;
+    Boolean doThing = true;
     
     public newLineDialog(){}
     
@@ -47,6 +50,7 @@ public class newLineDialog extends Stage{
         lineColor = new ColorPicker();
         yes = new Button("OK");
         cancel = new Button("Cancel");
+        check = new CheckBox("Circular");
        
 	// MAKE THE EVENT HANDLER FOR THESE BUTTONS
         yes.setOnAction(e -> {           
@@ -55,7 +59,12 @@ public class newLineDialog extends Stage{
         });
         
         cancel.setOnAction(e ->{
+            doThing = false;
             newLineDialog.this.close();
+        });
+        
+        check.setOnAction(e->{
+           // nothing to do... 
         });
         
         lineColor.setOnAction(e ->{
@@ -67,6 +76,7 @@ public class newLineDialog extends Stage{
         HBox buttonBox = new HBox(5);
         buttonBox.getChildren().add(yes);
         buttonBox.getChildren().add(cancel);
+        buttonBox.getChildren().add(check);
         
         // WE'LL PUT EVERYTHING HERE
         VBox canvas = new VBox(10);
@@ -77,7 +87,7 @@ public class newLineDialog extends Stage{
         
         
         // AND PUT IT IN THE WINDOW
-        Scene messageScene = new Scene(canvas, 400, 400);
+        Scene messageScene = new Scene(canvas, 300, 200);
         this.setScene(messageScene);
      }
      
@@ -103,5 +113,9 @@ public class newLineDialog extends Stage{
      
      public boolean isColorSelected(){
          return colorSelected;
+     }
+     
+     public boolean getThing(){
+         return doThing;
      }
 }

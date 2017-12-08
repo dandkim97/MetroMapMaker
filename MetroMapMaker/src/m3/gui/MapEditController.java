@@ -143,16 +143,17 @@ public class MapEditController {
         dialog.init(appGUI.getWindow());
         dialog.setTitle("Creating a New Line");
         dialog.showAndWait();
-        
-        this.setLineText(dialog.getText());
-        this.setLineColor(dialog.getColor());
-        
-        DraggableLine newLine = new DraggableLine(100, 100, 500, 100);
-        newLine.setLineColor(this.getLineColor());
-        newLine.setEndLabel(this.getLineText());
-        newLine.setStartLabel(this.getLineText());
-        
-        doAddLineTransaction(newLine, workspace.getMetroLines(), this.getLineText());
+        if(dialog.getThing()){
+            this.setLineText(dialog.getText());
+            this.setLineColor(dialog.getColor());
+
+            DraggableLine newLine = new DraggableLine(100, 100, 500, 100);
+            newLine.setLineColor(this.getLineColor());
+            newLine.setEndLabel(this.getLineText());
+            newLine.setStartLabel(this.getLineText());
+
+            doAddLineTransaction(newLine, workspace.getMetroLines(), this.getLineText());
+        }
 //        dataManager.addShape(newLine);
     }
       

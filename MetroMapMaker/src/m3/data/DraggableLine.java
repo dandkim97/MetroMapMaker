@@ -28,6 +28,7 @@ public class DraggableLine extends Group{
     ArrayList<String> lineList;
     
     Color lineColor;
+    boolean circular = false;
     
     public DraggableLine(double startx, double starty, double endx, double endy) {
         path = new Path();
@@ -111,6 +112,10 @@ public class DraggableLine extends Group{
         this.startText.setFill(color);
         this.endText.setFill(color);
         lineColor = color;
+    }
+    
+    public boolean getCircular(){
+        return circular;
     }
     
     
