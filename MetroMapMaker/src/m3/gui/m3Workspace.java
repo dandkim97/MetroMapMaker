@@ -498,8 +498,18 @@ public class m3Workspace extends AppWorkspaceComponent{
             mapEditController.doGetStation(stationName);
         });
         
+        colorButton2.setOnAction(e->{
+            String station = metroStations.getValue();
+            Color color = colorButton2.getValue();
+            mapEditController.doColorStation(station, color);
+        });
+        
         colorButton4.setOnAction(e->{
             mapEditController.doSelectBackgroundColor();
+        });
+        
+        colorButton5.setOnAction(e->{
+            mapEditController.doColorText(colorButton5.getValue());
         });
         
         imageBgButton.setOnAction(e->{
@@ -517,6 +527,8 @@ public class m3Workspace extends AppWorkspaceComponent{
         removeButton.setOnAction(e->{
             mapEditController.doRemoveElement();
         });
+        
+        
         
         // MAKE THE CANVAS CONTROLLER	
 	canvasController = new CanvasController(app);

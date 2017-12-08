@@ -178,7 +178,7 @@ public class m3Data implements AppDataComponent{
 	    unhighlightShape(selectedShape);
 	}
 	if (shape != null) {
-	    highlightShape(shape);
+//	    highlightShape(shape);
 	    m3Workspace workspace = (m3Workspace)app.getWorkspaceComponent();
 	    workspace.loadSelectedShapeSettings(shape);
 	}

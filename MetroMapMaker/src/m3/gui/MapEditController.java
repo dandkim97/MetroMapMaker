@@ -282,6 +282,10 @@ public class MapEditController {
             dataManager.getSText(name).setRotate(0);
     }
     
+    public void doColorStation(String name, Color color){
+        dataManager.getStation(name).setFill(color);
+    }
+    
     public void doSelectBackgroundColor(){
         m3Workspace workspace = (m3Workspace)app.getWorkspaceComponent();
 	Color selectedColor = workspace.getBackgroundColorPicker().getValue();
@@ -354,5 +358,16 @@ public class MapEditController {
             dataManager.removeShape(newShape);
         else if (newShape instanceof DraggableLabel)
             dataManager.removeShape(newShape);    
+    }
+    
+    public void doColorText(Color color){
+        if(dataManager.getSelectedShape() instanceof DraggableText){
+            DraggableText text = (DraggableText)dataManager.getSelectedShape();
+            text.setFill(color);
+        }
+        else if(dataManager.getSelectedShape() instanceof DraggableLabel){
+            DraggableLabel text = (DraggableLabel)dataManager.getSelectedShape();
+            text.setFill(color);
+        }
     }
 }
