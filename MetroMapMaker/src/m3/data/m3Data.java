@@ -19,6 +19,7 @@ import javafx.scene.layout.Pane;
 import javafx.scene.paint.Color;
 import javafx.scene.paint.Paint;
 import javafx.scene.shape.Shape;
+import static m3.data.m3State.SIZING_SHAPE;
 import m3.gui.m3Workspace;
 import m3.m3App;
 
@@ -140,6 +141,95 @@ public class m3Data implements AppDataComponent{
 //	    selectedShape.setStrokeWidth(initBorderWidth);
 //	}
 //    }
+    
+    public Shape getNewShape() {
+	return newShape;
+    }
+
+    public Shape getSelectedShape() {
+	return selectedShape;
+    }
+
+    public void setSelectedShape(Shape initSelectedShape) {
+	selectedShape = initSelectedShape;
+        this.highlightShape(initSelectedShape);
+    }
+    
+    public void selectSizedShape() {
+	if (selectedShape != null)
+	    unhighlightShape(selectedShape);
+	selectedShape = newShape;
+	highlightShape(selectedShape);
+	newShape = null;
+	if (state == SIZING_SHAPE) {
+	    state = ((Draggable)selectedShape).getStartingState();
+	}
+    }
+    
+    public Shape selectTopShape(int x, int y) {
+	Shape shape = getTopShape(x, y);
+        if (shape != null) {
+//	    ((Draggable)shape).start(x, y);
+	}
+	if (shape == selectedShape)
+	    return shape;
+	
+	if (selectedShape != null) {
+	    unhighlightShape(selectedShape);
+	}
+	if (shape != null) {
+	    highlightShape(shape);
+	    m3Workspace workspace = (m3Workspace)app.getWorkspaceComponent();
+	    workspace.loadSelectedShapeSettings(shape);
+	}
+	selectedShape = shape;
+	return shape;
+    }
+
+    public Shape getTopShape(int x, int y) {
+	for (int i = shapes.size() - 1; i >= 0; i--) {
+	    Shape shape = (Shape)shapes.get(i);
+	    if (shape.contains(x, y)) {
+		return shape;
+	    }
+	}
+	return null;
+    }
+    
+    public boolean isInState(m3State testState) {
+	return state == testState;
+    }
+    
+    public void setState(m3State initState) {
+	state = initState;
+    }
+    
+    public void startNewRectangle(int x, int y) {
+//	DraggableRectangle newRectangle = new DraggableRectangle();
+//	newRectangle.start(x, y);
+//	newShape = newRectangle;
+//	initNewShape();
+    }
+
+    public void initNewShape() {
+	// DESELECT THE SELECTED SHAPE IF THERE IS ONE
+	if (selectedShape != null) {
+	    unhighlightShape(selectedShape);
+	    selectedShape = null;
+	}
+
+	// USE THE CURRENT SETTINGS FOR THIS NEW SHAPE
+//	m3Workspace workspace = (m3Workspace)app.getWorkspaceComponent();
+//	newShape.setFill(Color.BLACK);
+//	newShape.setStroke(Color.BLACK);
+//	newShape.setStrokeWidth(1);
+	
+	// ADD THE SHAPE TO THE CANVAS
+	shapes.add(newShape);
+	
+	// GO INTO SHAPE SIZING MODE
+	state = m3State.SIZING_SHAPE;
+    }
     
     public void setShapes(ObservableList<Node> initShapes) {
 	shapes = initShapes;
@@ -268,4 +358,11 @@ public class m3Data implements AppDataComponent{
         return null;
     }
     
+//    public DraggableText getTextByClick(double x, double y){
+//        for(int i = 0; i < textList.size(); i++){
+//            if (textList.get(i).contains(x, y))
+//                return textList.get(i);
+//        }
+//        return null;
+//    }
 }

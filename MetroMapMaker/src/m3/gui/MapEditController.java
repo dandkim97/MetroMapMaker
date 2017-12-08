@@ -9,19 +9,24 @@ import javafx.scene.control.Alert.AlertType;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextInputDialog;
+import javafx.scene.image.Image;
 import javafx.scene.layout.Pane;
 import javafx.scene.paint.Color;
+import javafx.scene.paint.ImagePattern;
 import javafx.scene.shape.Circle;
 import javafx.scene.shape.Line;
 import javafx.scene.shape.LineTo;
 import javafx.scene.shape.MoveTo;
 import javafx.scene.shape.Path;
+import javafx.scene.shape.Shape;
 import javafx.scene.text.Font;
 import javafx.scene.text.FontWeight;
 import javafx.scene.text.Text;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
+import m3.data.DraggableLabel;
 import m3.data.DraggableLine;
+import m3.data.DraggableRectangle;
 import m3.data.DraggableStation;
 import m3.data.DraggableText;
 import m3.data.m3Data;
@@ -185,15 +190,18 @@ public class MapEditController {
         dialog.setContentText("Enter your station name:");
         
         Optional<String> result = dialog.showAndWait();
-        DraggableText dtext = new DraggableText(result.get());
-        dtext.disableDrag();
-        this.setLineText(result.get());
-        
-        DraggableStation station = new DraggableStation(150, 150, 10);
-        dtext.xProperty().bindBidirectional(station.getTopRightX());
-        dtext.yProperty().bindBidirectional(station.getTopRightY());
-        station.setName(result.get());
-        dataManager.addStation(station, dtext);
+        if(result.isPresent())
+        {
+            DraggableText dtext = new DraggableText(result.get());
+            dtext.disableDrag();
+            this.setLineText(result.get());
+
+            DraggableStation station = new DraggableStation(150, 150, 10);
+            dtext.xProperty().bindBidirectional(station.getTopRightX());
+            dtext.yProperty().bindBidirectional(station.getTopRightY());
+            station.setName(result.get());
+            dataManager.addStation(station, dtext);
+        }
         
     }
     
@@ -305,5 +313,46 @@ public class MapEditController {
     
     public String getImage(){
         return image;
+    }
+    
+    public void doAddImage(){
+        // GET THE PICTURE  
+        String str = "";
+        str = app.getGUI().getFileController().promptToOpenPic();
+        Image image1 = new Image(str);
+        ImagePattern imagePattern = new ImagePattern(image1);
+
+        // FILL IT IN A RECTANGLE
+        DraggableRectangle d = new DraggableRectangle();
+        d.setFill(imagePattern);
+        d.setLocationAndSize(5, 5, image1.getWidth(), image1.getHeight());
+
+//        m3Workspace workspace = (m3Workspace)app.getWorkspaceComponent();
+        dataManager.addShape(d);
+    }
+    
+    public void doAddLabel(){
+        TextInputDialog dialog = new TextInputDialog();
+        dialog.setTitle("Making a New Label");
+        dialog.setContentText("Enter your label name:");
+        
+        Optional<String> result = dialog.showAndWait();
+        if(!result.isPresent())
+        {}
+        else{
+            DraggableLabel label = new DraggableLabel(result.get());
+            label.setX(100);
+            label.setY(100);
+            dataManager.addShape(label);
+        }
+    }
+    
+    public void doRemoveElement(){
+        m3Workspace workspace = (m3Workspace)app.getWorkspaceComponent();
+        Shape newShape = dataManager.getSelectedShape();
+        if (newShape instanceof DraggableRectangle)
+            dataManager.removeShape(newShape);
+        else if (newShape instanceof DraggableLabel)
+            dataManager.removeShape(newShape);    
     }
 }

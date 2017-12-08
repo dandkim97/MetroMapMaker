@@ -37,9 +37,13 @@ import javafx.scene.layout.HBox;
 import javafx.scene.layout.Pane;
 import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
+import javafx.scene.shape.Shape;
 import javafx.scene.text.Text;
 import static m3.css.m3Style.*;
+import m3.data.DraggableLabel;
+import m3.data.DraggableRectangle;
 import m3.data.DraggableStation;
+import m3.data.DraggableText;
 import m3.data.m3Data;
 
 /**
@@ -164,6 +168,7 @@ public class m3Workspace extends AppWorkspaceComponent{
     // FOR DISPLAYING DEBUG STUFF
     Text debugText;
     
+    String label;
     
     // ACCESSOR METHODS EVENT HANDLERS MAY NEED
     
@@ -501,9 +506,31 @@ public class m3Workspace extends AppWorkspaceComponent{
             mapEditController.doImageBackground(); 
         });
         
+        imageButton.setOnAction(e->{
+            mapEditController.doAddImage();
+        });
+        
+        labelButton.setOnAction(e->{
+            mapEditController.doAddLabel();
+        });
+        
+        removeButton.setOnAction(e->{
+            mapEditController.doRemoveElement();
+        });
+        
         // MAKE THE CANVAS CONTROLLER	
 	canvasController = new CanvasController(app);
         m3Data dataManager = (m3Data)app.getDataComponent();
+        canvas.setOnMousePressed(e->{
+            canvasController.processCanvasMousePress((int)e.getX(), (int)e.getY());
+	});
+	canvas.setOnMouseReleased(e->{
+	    canvasController.processCanvasMouseRelease((int)e.getX(), (int)e.getY());
+	});
+	canvas.setOnMouseDragged(e->{
+	    canvasController.processCanvasMouseDragged((int)e.getX(), (int)e.getY());
+	});
+        
         canvas.setOnMouseClicked(e->{
             if(addButton.isSelected() && e.getTarget() instanceof DraggableStation){
                 String station = dataManager.getStationByClick(e.getX(), e.getY()).getName();
@@ -522,18 +549,24 @@ public class m3Workspace extends AppWorkspaceComponent{
             }
 
         });
-//	canvas.setOnMousePressed(e->{
-//            if(e.getClickCount() == 2) 
-//                canvasController.processCanvasDoubleMousePress((int)e.getX(), (int)e.getY()); 
-//            else if(e.getClickCount() == 1)
-//                canvasController.processCanvasMousePress((int)e.getX(), (int)e.getY());
-//	});
-//	canvas.setOnMouseReleased(e->{
-//	    canvasController.processCanvasMouseRelease((int)e.getX(), (int)e.getY());
-//	});
-//	canvas.setOnMouseDragged(e->{
-//	    canvasController.processCanvasMouseDragged((int)e.getX(), (int)e.getY());
-//	});
+	
+    }
+    
+    // HELPER METHOD
+    public void loadSelectedShapeSettings(Shape shape) {
+//        if(shape instanceof DraggableRectangle)
+//        {
+//            double lineThickness = shape.getStrokeWidth();
+////            outlineThicknessSlider.setValue(lineThickness);
+//        }
+//        else if (shape != null) {
+//	    Color fillColor = (Color)shape.getFill();
+//	    Color strokeColor = (Color)shape.getStroke();
+//	    double lineThickness = shape.getStrokeWidth();
+////	    fillColorPicker.setValue(fillColor);
+////	    outlineColorPicker.setValue(strokeColor);
+////	    outlineThicknessSlider.setValue(lineThickness);	    
+//	}
     }
     
     public void initStyle() {
