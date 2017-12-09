@@ -11,8 +11,14 @@ import static djf.settings.AppStartupConstants.*;
 import djf.ui.AppGUI;
 import djf.ui.AppMessageDialogSingleton;
 import djf.ui.AppYesNoCancelDialogSingleton;
+import javafx.embed.swing.SwingFXUtils;
+import javafx.scene.SnapshotParameters;
 import javafx.scene.control.TextInputDialog;
+import javafx.scene.image.WritableImage;
+import javafx.scene.layout.Pane;
+import javax.imageio.ImageIO;
 import jtps.JTPS;
+import m3.gui.m3Workspace;
 import properties_manager.PropertiesManager;
 
 /**
@@ -308,6 +314,17 @@ public class AppFileController {
                 alert.setHeaderText("Exported Map");
                 alert.setContentText("Map has been exported.");
                 alert.showAndWait();
+                
+        m3Workspace workspace = (m3Workspace)app.getWorkspaceComponent();
+	Pane canvas = workspace.getCanvas();
+	WritableImage image =  canvas.snapshot(new SnapshotParameters(), null);
+	File file = new File("Metro Map.png");
+	try {
+	    ImageIO.write(SwingFXUtils.fromFXImage(image, null), "png", file);
+	}
+	catch(IOException ioe) {
+	    ioe.printStackTrace();
+	}
     }
     
     public void handleWelcomeRequest(){

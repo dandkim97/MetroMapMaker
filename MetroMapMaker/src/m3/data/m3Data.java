@@ -10,6 +10,7 @@ import djf.components.AppDataComponent;
 import java.util.ArrayList;
 import javafx.collections.ObservableList;
 import javafx.scene.Node;
+import javafx.scene.control.ComboBox;
 import javafx.scene.effect.BlurType;
 import javafx.scene.effect.DropShadow;
 import javafx.scene.effect.Effect;
@@ -111,6 +112,16 @@ public class m3Data implements AppDataComponent{
     
     public ArrayList<DraggableText> getTexts(){
         return textList;
+    }
+    
+    public ComboBox<String> getMetroLines(){
+        m3Workspace workspace = (m3Workspace)app.getWorkspaceComponent();
+        return workspace.getMetroLines();
+    }
+    
+    public ComboBox<String> getMetroStations(){
+        m3Workspace workspace = (m3Workspace)app.getWorkspaceComponent();
+        return workspace.getMetroStations();
     }
     
     public Color getLineColor() {

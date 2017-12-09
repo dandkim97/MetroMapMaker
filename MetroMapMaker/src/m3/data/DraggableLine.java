@@ -62,6 +62,14 @@ public class DraggableLine extends Group{
     }
     
     // GETTERS
+    public MoveTo getMoveTo(){
+        return begin;
+    }
+    
+    public LineTo getEndTo(){
+        return line;
+    }
+    
     public ArrayList<String> getLineList(){
         return lineList;
     }
